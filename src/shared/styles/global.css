@@ -1,0 +1,10 @@
+/* Shared base styles. Page-specific styling can be added here later. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}

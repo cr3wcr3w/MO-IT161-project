@@ -1,0 +1,23 @@
+{
+  "name": "mo-it161-project",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "check": "npm run check:format && npm run check:lint",
+    "fix": "npm run fix:format && npm run fix:lint",
+    "check:format": "oxfmt --check",
+    "check:lint": "oxlint",
+    "fix:format": "oxfmt",
+    "fix:lint": "oxlint --fix"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.65.0",
+    "oxlint": "^1.80.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2"
+  }
+}
