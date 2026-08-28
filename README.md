@@ -48,7 +48,7 @@ npx @tailwindcss/cli -i ./src/shared/styles/config.css -o ./src/shared/styles/gl
 
 ## Simple Routing
 
-This project uses hash routing, so navigation works without a backend server.
+This project uses client-side routing, so navigation works without a backend server.
 
 - Home: `http://localhost:5173/`
 - Dashboard: `http://localhost:5173/dashboard`
