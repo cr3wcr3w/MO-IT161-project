@@ -4,10 +4,13 @@ import { renderNav } from "./components/nav";
 
 const html = String.raw;
 
-// Read the route after the # in the URL. Hash routing works without a server
-// configuration because changing the hash does not reload the page.
-function currentRoute(): string {
-  return window.location.hash.replace("#", "") || "/";
+// Read the route
+function currentRoute(): string[] {
+  const currentUrl = window.location.href;
+
+  const parts = currentUrl.split("/");
+  const route = "/" + parts.slice(3).join("/");
+  return route.split("/").filter(Boolean);
 }
 
 function renderRoute(): void {
@@ -18,21 +21,29 @@ function renderRoute(): void {
   }
 
   const route = currentRoute();
-  const page = route === "/dashboard" ? renderDashboard() : renderHome();
+  console.log(`Rendering route: ${route[0]}`);
+  let page: string;
+  switch (route[0]) {
+    case undefined:
+      page = renderHome();
+      break;
+    case "dashboard":
+      page = renderNav(renderDashboard());
+      break;
+    case "reports":
+      page = renderNav(renderDashboard());
+      break;
+    default:
+      page = `<h1>404 Not Found</h1>`;
+  }
+  console.log(`Rendering page for route: ${route[0]}`);
 
-  // The nav is rendered on every route, while `page` changes based on the hash.
-  app.innerHTML = html`${renderNav(route)}${page}`;
+  app.innerHTML = html`
+    ${route}
+    <main>${page}</main>
+  `;
 }
 
-// To add another route:
-// 1. Create a renderer in src/routes, such as renderSettings().
-// 2. Import it at the top of this file.
-// 3. Add a condition above the home fallback:
-//    if (currentRoute() === "/settings") {
-//      app.innerHTML = renderSettings();
-//      return;
-//    }
-// 4. Navigate with window.location.hash = "/settings" or href="#/settings".
 export function startRouter(): void {
   window.addEventListener("hashchange", renderRoute);
   renderRoute();
