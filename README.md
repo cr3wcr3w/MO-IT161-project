@@ -43,7 +43,7 @@ npm run fix
 Tailwind Setup
 
 ```bash
-npx @tailwindcss/cli -i ./src/shared/styles/config.css -o ./src/shared/styles/global.css --watch
+npm run css:build
 ```
 
 ## Simple Routing
