@@ -50,6 +50,7 @@ npm run css:build
 
 This project uses client-side routing, so navigation works without a backend server.
 
-- Home: `http://localhost:5173/`
+- Home (public reports): `http://localhost:5173/`
 - Dashboard: `http://localhost:5173/dashboard`
-- Reports: `http://localhost:5173/reports`
+- Signup: `http://localhost:5173/signup`
+- Signin: `http://localhost:5173/signin`

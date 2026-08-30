@@ -1,16 +1,14 @@
 import { renderDashboard } from "../routes/dashboard.ts";
 import { renderHome } from "../routes/home.ts";
-import { renderNav } from "./components/nav";
+import { renderSignIn } from "../routes/signin.ts";
+import { renderSignUp } from "../routes/signup.ts";
+import { renderDashboardNav } from "./components/dashboard-nav.ts";
 
 const html = String.raw;
 
-// Read the route
 function currentRoute(): string[] {
-  const currentUrl = window.location.href;
-
-  const parts = currentUrl.split("/");
-  const route = "/" + parts.slice(3).join("/");
-  return route.split("/").filter(Boolean);
+  const pathname = new URL(window.location.href).pathname;
+  return pathname.split("/").filter(Boolean);
 }
 
 function renderRoute(): void {
@@ -21,23 +19,30 @@ function renderRoute(): void {
   }
 
   const route = currentRoute();
+  console.log("Current route:", route);
   let page: string;
+
   switch (route[0]) {
     case undefined:
       page = renderHome();
       break;
+    case "signin":
+      page = renderSignIn();
+      break;
+    case "signup":
+      page = renderSignUp();
+      break;
     case "dashboard":
-      page = renderNav(renderDashboard());
+      page = renderDashboardNav(route[0]) + renderDashboard();
       break;
     case "reports":
-      page = renderNav(renderDashboard());
+      page = renderDashboardNav(route[0]) + renderDashboard();
       break;
     default:
       page = `<h1>404 Not Found</h1>`;
   }
-  console.log(`Rendering page for route: ${route[0]}`);
 
-  app.innerHTML = html` ${route} ${page} `;
+  app.innerHTML = html`${page}`;
 }
 
 export function startRouter(): void {
