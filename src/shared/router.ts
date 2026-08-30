@@ -21,7 +21,6 @@ function renderRoute(): void {
   }
 
   const route = currentRoute();
-  console.log(`Rendering route: ${route[0]}`);
   let page: string;
   switch (route[0]) {
     case undefined:
@@ -38,10 +37,7 @@ function renderRoute(): void {
   }
   console.log(`Rendering page for route: ${route[0]}`);
 
-  app.innerHTML = html`
-    ${route}
-    <main>${page}</main>
-  `;
+  app.innerHTML = html` ${route} ${page} `;
 }
 
 export function startRouter(): void {
