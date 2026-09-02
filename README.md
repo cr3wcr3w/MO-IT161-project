@@ -1,5 +1,7 @@
 # MO-IT161 Project
 
+A small TypeScript/Vite app for managing incident reporting with role-based sign-up flows.
+
 ## Setup
 
 Install the project dependencies:
@@ -40,17 +42,33 @@ Automatically format files and fix lint issues:
 npm run fix
 ```
 
-Tailwind Setup
+Build the Tailwind CSS output:
 
 ```bash
 npm run css:build
 ```
 
-## Simple Routing
+## Routes
 
-This project uses client-side routing, so navigation works without a backend server.
+This project uses client-side hash-based routing with a lightweight router.
 
-- Home (public reports): `http://localhost:5173/`
-- Dashboard: `http://localhost:5173/dashboard`
-- Signup: `http://localhost:5173/signup`
-- Signin: `http://localhost:5173/signin`
+- Home: `#/`
+- Dashboard: `#/dashboard`
+- Sign up: `#/signup`
+- Sign in: `#/signin`
+
+## Authentication flow
+
+- Users can create an account from the sign-up page.
+- During sign-up, they can choose a role:
+  - Researcher
+  - Triage
+- The selected role is stored in the session state and used for the active user session.
+- Once a user is authenticated, the app redirects them to the dashboard.
+- If the user is not authenticated, protected routes redirect back to the home page.
+
+## Roles
+
+- Researcher: users who submit and manage incident reports.
+- Triage: users who review and validate submitted incidents.
+- Admin: represented as a future role that can be extended for management actions.

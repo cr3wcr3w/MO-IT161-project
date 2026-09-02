@@ -6,12 +6,17 @@ import { bindSignInForm } from "../../feature/signin/components/signin-form.ts";
 import { bindSignUpForm } from "../../feature/signup/components/signup-form.ts";
 import { renderDashboardNav } from "../components/dashboard-nav.ts";
 import { render404 } from "../../routes/404.ts";
+import { $users } from "../store/auth.ts";
 
 const html = String.raw;
 
-function currentRoute(): string[] {
-  const pathname = new URL(window.location.href).pathname;
-  return pathname.split("/").filter(Boolean);
+export function currentRoute(): string[] {
+  return window.location.pathname.split("/").filter(Boolean);
+}
+
+export function navigate(path: string) {
+  window.history.pushState({}, "", path);
+  renderRoute();
 }
 
 function renderRoute(): void {
@@ -25,17 +30,31 @@ function renderRoute(): void {
   console.log("Current route:", route);
   let page: string;
 
+  console.log("User State:", $users.get());
+
   switch (route[0]) {
     case undefined: // home
-      page = renderHome();
+      page = renderDashboardNav(route[0]) + renderHome();
       break;
     case "signin":
+      if ($users.get() !== null) {
+        navigate("/dashboard");
+        return;
+      }
       page = renderSignIn();
       break;
     case "signup":
+      if ($users.get() !== null) {
+        navigate("/dashboard");
+        return;
+      }
       page = renderSignUp();
       break;
     case "dashboard":
+      if ($users.get() === null) {
+        navigate("/");
+        return;
+      }
       page = renderDashboardNav(route[0]) + renderDashboard();
       break;
     default:

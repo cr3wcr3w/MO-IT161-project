@@ -1,5 +1,7 @@
 import { showPopup } from "../../../shared/components/popup";
 import { responsiveTypography } from "../../../shared/components/typography";
+import { navigate } from "../../../shared/lib/router";
+import { setUserSession } from "../../../shared/store/auth";
 
 const html = String.raw;
 
@@ -123,6 +125,17 @@ export function bindSignInForm(): void {
       closeAfterMs: 3000,
     });
 
-    window.setTimeout(restoreForm, 3000);
+    setUserSession({
+      fullName: "John Doe",
+      email: email,
+      role: "guest",
+      verified: true,
+      authenticated: true,
+    });
+
+    window.setTimeout(() => {
+      restoreForm();
+      navigate("/dashboard");
+    }, 1500);
   });
 }

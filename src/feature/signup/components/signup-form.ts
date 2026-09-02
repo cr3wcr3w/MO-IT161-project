@@ -1,5 +1,7 @@
 import { showPopup } from "../../../shared/components/popup";
 import { responsiveTypography } from "../../../shared/components/typography";
+import { navigate } from "../../../shared/lib/router";
+import { setUserSession } from "../../../shared/store/auth";
 
 const html = String.raw;
 
@@ -75,6 +77,18 @@ export function signupForm(): string {
         />
       </label>
 
+      <label class="mb-2 ${responsiveTypography.label} font-medium text-slate-700">
+        Sign up as
+        <select
+          id="signup-role"
+          name="role"
+          class="select select-bordered h-14 w-full rounded-xl border-slate-200 bg-white/70 text-slate-800 focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100"
+        >
+          <option value="researcher">Researcher</option>
+          <option value="triage">Triage</option>
+        </select>
+      </label>
+
       <button
         type="submit"
         class="${responsiveTypography.button} transition delay-150 duration-300 ease-in-out hover:scale-105 btn h-14 w-full rounded-2xl border-0 bg-slate-950 text-white shadow-xl hover:bg-slate-900 mb-3"
@@ -102,11 +116,13 @@ export function bindSignUpForm(): void {
     const confirmPasswordInput = document.querySelector<HTMLInputElement>(
       "#signup-confirm-password",
     );
+    const roleInput = document.querySelector<HTMLSelectElement>("#signup-role");
 
     const fullName = fullNameInput?.value.trim() ?? "";
     const email = emailInput?.value.trim() ?? "";
     const password = passwordInput?.value ?? "";
     const confirmPassword = confirmPasswordInput?.value ?? "";
+    const role = roleInput?.value ?? "researcher";
 
     const restoreForm = () => {
       setFormDisabledState(form, false);
@@ -155,6 +171,7 @@ export function bindSignUpForm(): void {
       fullName,
       email,
       password,
+      role,
     });
 
     showPopup({
@@ -165,6 +182,17 @@ export function bindSignUpForm(): void {
       closeAfterMs: 3000,
     });
 
-    window.setTimeout(restoreForm, 3000);
+    setUserSession({
+      fullName: fullName,
+      email: email,
+      role: role,
+      verified: true,
+      authenticated: true,
+    });
+
+    window.setTimeout(() => {
+      restoreForm();
+      navigate("/dashboard");
+    }, 1500);
   });
 }
