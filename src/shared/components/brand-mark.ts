@@ -1,5 +1,6 @@
 import { ShieldCheck } from "lucide";
 import { renderLucideIcon } from "./lucide-icon";
+import { responsiveTypography } from "./typography";
 
 const html = String.raw;
 
@@ -16,8 +17,8 @@ export function renderBrandMark({
   showText = true,
   text = "Incident Report System",
   size = 18,
-  wrapperClassName = "flex items-center gap-3 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl",
-  textClassName = "",
+  wrapperClassName = "flex items-center gap-3 text-slate-900",
+  textClassName = responsiveTypography.brand,
   iconClassName = "text-white",
 }: BrandMarkOptions = {}): string {
   const icon = renderLucideIcon(ShieldCheck, {

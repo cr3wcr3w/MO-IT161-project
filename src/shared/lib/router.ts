@@ -1,0 +1,70 @@
+import { renderDashboard } from "../../routes/dashboard.ts";
+import { renderHome } from "../../routes/home.ts";
+import { renderSignIn } from "../../routes/signin.ts";
+import { renderSignUp } from "../../routes/signup.ts";
+import { bindSignInForm } from "../../feature/signin/components/signin-form.ts";
+import { bindSignUpForm } from "../../feature/signup/components/signup-form.ts";
+import { renderDashboardNav } from "../components/dashboard-nav.ts";
+import { render404 } from "../../routes/404.ts";
+
+const html = String.raw;
+
+function currentRoute(): string[] {
+  const pathname = new URL(window.location.href).pathname;
+  return pathname.split("/").filter(Boolean);
+}
+
+function renderRoute(): void {
+  const app = document.querySelector<HTMLDivElement>("#app");
+
+  if (!app) {
+    return;
+  }
+
+  const route = currentRoute();
+  console.log("Current route:", route);
+  let page: string;
+
+  switch (route[0]) {
+    case undefined: // home
+      page = renderHome();
+      break;
+    case "signin":
+      page = renderSignIn();
+      break;
+    case "signup":
+      page = renderSignUp();
+      break;
+    case "dashboard":
+      page = renderDashboardNav(route[0]) + renderDashboard();
+      break;
+    default:
+      page = render404();
+  }
+
+  app.innerHTML = html`${page}`;
+
+  // binding DOM
+  // the routes folder returning as an array of strings, so DOM manipulation cannot be done
+  switch (route[0]) {
+    case undefined: // home
+      break;
+    case "signin":
+      bindSignInForm();
+      break;
+    case "signup":
+      bindSignUpForm();
+      break;
+    case "dashboard":
+      break;
+    default:
+      break;
+  }
+}
+
+// Start the router
+// This function sets up the event listener for hash changes and renders the initial route.
+export function startRouter(): void {
+  window.addEventListener("hashchange", renderRoute);
+  renderRoute();
+}
