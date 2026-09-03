@@ -7,6 +7,7 @@ const html = String.raw;
 type BrandMarkOptions = {
   showText?: boolean;
   text?: string;
+  textColor?: "white" | "black";
   size?: number;
   wrapperClassName?: string;
   textClassName?: string;
@@ -16,6 +17,7 @@ type BrandMarkOptions = {
 export function renderBrandMark({
   showText = true,
   text = "Incident Report System",
+  textColor = "black",
   size = 18,
   wrapperClassName = "flex items-center gap-3 text-slate-900",
   textClassName = responsiveTypography.brand,
@@ -27,6 +29,7 @@ export function renderBrandMark({
     color: "white",
     className: iconClassName,
   }).outerHTML;
+  const textColorClassName = textColor === "white" ? "text-white" : "text-black";
 
   if (!showText) {
     return html`
@@ -47,7 +50,7 @@ export function renderBrandMark({
       >
         ${icon}
       </span>
-      <span class="${textClassName}">${text}</span>
+      <span class="${textClassName} ${textColorClassName}">${text}</span>
     </div>
   `;
 }

@@ -1,5 +1,5 @@
 import { renderDashboard } from "../../routes/dashboard.ts";
-import { renderHome } from "../../routes/home.ts";
+import { bindHomeFilters, renderHome } from "../../routes/home.ts";
 import { renderSignIn } from "../../routes/signin.ts";
 import { renderSignUp } from "../../routes/signup.ts";
 import { bindSignInForm } from "../../feature/signin/components/signin-form.ts";
@@ -34,7 +34,7 @@ function renderRoute(): void {
 
   switch (route[0]) {
     case undefined: // home
-      page = renderDashboardNav(route[0]) + renderHome();
+      page = renderDashboardNav({ authenticated: false }) + renderHome();
       break;
     case "signin":
       if ($users.get() !== null) {
@@ -55,7 +55,7 @@ function renderRoute(): void {
         navigate("/");
         return;
       }
-      page = renderDashboardNav(route[0]) + renderDashboard();
+      page = renderDashboardNav({ authenticated: true }) + renderDashboard();
       break;
     default:
       page = render404();
@@ -67,6 +67,7 @@ function renderRoute(): void {
   // the routes folder returning as an array of strings, so DOM manipulation cannot be done
   switch (route[0]) {
     case undefined: // home
+      bindHomeFilters();
       break;
     case "signin":
       bindSignInForm();
