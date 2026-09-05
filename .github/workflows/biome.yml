@@ -1,0 +1,33 @@
+name: Biome
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - irs-backend
+          - irs-frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ${{ matrix.package }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.package }}
+        run: npm ci
+
+      - name: Run Biome check
+        working-directory: ${{ matrix.package }}
+        run: npm run biome:check

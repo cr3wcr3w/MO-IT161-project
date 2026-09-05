@@ -1,74 +1,57 @@
 # MO-IT161 Project
 
-A small TypeScript/Vite app for managing incident reporting with role-based sign-up flows.
+## Requirements
+
+- Node.js 24.x
+- npm
+- Docker with Docker Compose, for development mode only
+
+The project uses one root environment file: `.env`. If it does not exist, the setup script creates it from `sample.env`. Existing `.env` values are preserved.
 
 ## Setup
 
-Install the project dependencies:
+Run the setup script from the repository root:
 
 ```bash
-npm install
+./setup.sh --dev
 ```
 
-## Commands
+On Windows Git Bash, use the same command. The script installs dependencies, starts PostgreSQL in detached mode, and starts the backend and frontend in development mode. Setup output is cleared before the final status summary, and application output is hidden. No log files are created.
 
-Start the development server:
+Development URLs:
+
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8000`
+- PostgreSQL: `localhost:5432`
+
+Press `Ctrl+C` to stop the development servers. The script automatically runs `docker compose down`, which removes the PostgreSQL container but keeps the named database volume.
+
+## Production
 
 ```bash
-npm run dev
+./setup.sh --prod
 ```
 
-Create a production build:
+Production mode installs dependencies, builds both applications, and runs the built backend and frontend preview. It does not start or use Docker/PostgreSQL. Setup output is cleared before the final status summary, and application output is hidden. No log files are created.
+
+Production URLs:
+
+- Frontend preview: `http://localhost:3000`
+- Backend: `http://localhost:8000`
+
+Press `Ctrl+C` to stop both production processes.
+
+## Manual Docker Commands
+
+Development PostgreSQL can also be managed manually:
 
 ```bash
-npm run build
+docker compose up -d --build
+docker compose down
 ```
 
-Preview the production build locally:
+`docker compose down` removes the container but does not remove the `irs-postgres-data` volume. To delete the database data as well:
 
 ```bash
-npm run preview
+docker compose down --volumes
 ```
-
-Check formatting and lint rules:
-
-```bash
-npm run check
-```
-
-Automatically format files and fix lint issues:
-
-```bash
-npm run fix
-```
-
-Build the Tailwind CSS output:
-
-```bash
-npm run css:build
-```
-
-## Routes
-
-This project uses client-side hash-based routing with a lightweight router.
-
-- Home: `#/`
-- Dashboard: `#/dashboard`
-- Sign up: `#/signup`
-- Sign in: `#/signin`
-
-## Authentication flow
-
-- Users can create an account from the sign-up page.
-- During sign-up, they can choose a role:
-  - Researcher
-  - Triage
-- The selected role is stored in the session state and used for the active user session.
-- Once a user is authenticated, the app redirects them to the dashboard.
-- If the user is not authenticated, protected routes redirect back to the home page.
-
-## Roles
-
-- Researcher: users who submit and manage incident reports.
-- Triage: users who review and validate submitted incidents.
-- Admin: represented as a future role that can be extended for management actions.
