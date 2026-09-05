@@ -1,18 +1,20 @@
 {
   "name": "irs-frontend",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "type": "module",
   "imports": {
     "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "vite dev --port 3000",
+    "dev": "vite dev",
     "generate-routes": "tsr generate",
     "build": "vite build",
     "preview": "vite preview",
-    "format": "biome format",
-    "lint": "biome lint",
-    "check": "biome check"
+    "biome:write": "biome check --write",
+    "biome:check": "biome check"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
