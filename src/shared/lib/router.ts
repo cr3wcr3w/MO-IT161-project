@@ -92,7 +92,7 @@ function renderRoute(): void {
         position: "bottom-right",
         description:
           "Just put random email and password to sign in, the auth put in session storage to mimic",
-        closeAfterMs: 50000,
+        closeAfterMs: 30000,
       });
       break;
     case "signup":
@@ -100,7 +100,7 @@ function renderRoute(): void {
       showPopup({
         position: "bottom-right",
         description: "After you Signup, this will redirect you to dashboard page",
-        closeAfterMs: 50000,
+        closeAfterMs: 30000,
       });
       break;
     case "dashboard":
@@ -109,7 +109,7 @@ function renderRoute(): void {
         position: "bottom-right",
         description:
           "Dashboard page is protected, you need to sign in first to access this page, and you can sign out by clicking the logout button",
-        closeAfterMs: 50000,
+        closeAfterMs: 30000,
       });
       break;
     default:
