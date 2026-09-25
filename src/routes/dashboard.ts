@@ -16,7 +16,7 @@ export function bindDashboard(): void {
     setTimeout(() => {
       clearUserSession();
 
-      navigate("/");
+      navigate("");
     }, 5);
     logoutButton.disabled = false;
   });

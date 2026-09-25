@@ -37,21 +37,21 @@ function renderRoute(): void {
       break;
     case "signin":
       if ($users.get() !== null) {
-        navigate("/dashboard");
+        navigate("dashboard");
         return;
       }
       page = renderSignIn();
       break;
     case "signup":
       if ($users.get() !== null) {
-        navigate("/dashboard");
+        navigate("dashboard");
         return;
       }
       page = renderSignUp();
       break;
     case "dashboard":
       if ($users.get() === null) {
-        navigate("/");
+        navigate("");
         return;
       }
       page = renderDashboardNav({ authenticated: true }) + renderDashboard();
