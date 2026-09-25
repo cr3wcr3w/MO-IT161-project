@@ -46,4 +46,9 @@ export function setUserSession(user: User | null): void {
   $users.set(user);
 }
 
+export function clearUserSession(): void {
+  setSessionValue(STORAGE_KEY, null);
+  $users.set(null);
+}
+
 export const $users = atom<User | null>(readUserFromSession());

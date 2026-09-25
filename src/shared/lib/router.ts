@@ -1,4 +1,4 @@
-import { renderDashboard } from "../../routes/dashboard.ts";
+import { renderDashboard, bindDashboard } from "../../routes/dashboard.ts";
 import { bindHomeFilters, renderHome } from "../../routes/home.ts";
 import { renderSignIn } from "../../routes/signin.ts";
 import { renderSignUp } from "../../routes/signup.ts";
@@ -7,6 +7,7 @@ import { bindSignUpForm } from "../../feature/signup/components/signup-form.ts";
 import { renderDashboardNav } from "../components/dashboard-nav.ts";
 import { render404 } from "../../routes/404.ts";
 import { $users } from "../store/auth.ts";
+import { showPopup } from "../components/popup.ts";
 
 const html = String.raw;
 
@@ -29,8 +30,6 @@ function renderRoute(): void {
   const route = currentRoute();
   console.log("Current route:", route);
   let page: string;
-
-  console.log("User State:", $users.get());
 
   switch (route[0]) {
     case undefined: // home
@@ -71,11 +70,26 @@ function renderRoute(): void {
       break;
     case "signin":
       bindSignInForm();
+      showPopup({
+        position: "bottom-right",
+        description:
+          "Just put random email and password to sign in, the auth put in session storage to mimic",
+      });
       break;
     case "signup":
       bindSignUpForm();
+      showPopup({
+        position: "bottom-right",
+        description: "Signup is not functional, just for demo purpose",
+      });
       break;
     case "dashboard":
+      bindDashboard();
+      showPopup({
+        position: "bottom-right",
+        description:
+          "Theres no dashboard content available, to remove the session storage you can manually remove or click the logout button",
+      });
       break;
     default:
       break;
