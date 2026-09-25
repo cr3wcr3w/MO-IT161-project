@@ -11,12 +11,30 @@ import { showPopup } from "../components/popup.ts";
 
 const html = String.raw;
 
+function normalizeRoutePath(path: string): string {
+  const trimmedPath = path.trim();
+
+  if (!trimmedPath || trimmedPath === "/") {
+    return "/";
+  }
+
+  return trimmedPath.startsWith("/") ? trimmedPath : `/${trimmedPath}`;
+}
+
 export function currentRoute(): string[] {
   return window.location.pathname.split("/").filter(Boolean);
 }
 
 export function navigate(path: string) {
-  window.history.pushState({}, "", path);
+  const nextPath = normalizeRoutePath(path);
+  const currentUrl = `${window.location.pathname}${window.location.search}`;
+
+  if (currentUrl === nextPath) {
+    renderRoute();
+    return;
+  }
+
+  window.history.pushState({}, "", nextPath);
   renderRoute();
 }
 
@@ -37,21 +55,21 @@ function renderRoute(): void {
       break;
     case "signin":
       if ($users.get() !== null) {
-        navigate("dashboard");
+        navigate("/dashboard");
         return;
       }
       page = renderSignIn();
       break;
     case "signup":
       if ($users.get() !== null) {
-        navigate("dashboard");
+        navigate("/dashboard");
         return;
       }
       page = renderSignUp();
       break;
     case "dashboard":
       if ($users.get() === null) {
-        navigate("");
+        navigate("/");
         return;
       }
       page = renderDashboardNav({ authenticated: true }) + renderDashboard();
@@ -88,7 +106,7 @@ function renderRoute(): void {
       showPopup({
         position: "bottom-right",
         description:
-          "Theres no dashboard content available, to remove the session storage you can manually remove or click the logout button",
+          "Dashboard page is protected, you need to sign in first to access this page, and you can sign out by clicking the logout button",
       });
       break;
     default:
@@ -97,8 +115,8 @@ function renderRoute(): void {
 }
 
 // Start the router
-// This function sets up the event listener for hash changes and renders the initial route.
+// This function sets up the event listener for browser navigation and renders the initial route.
 export function startRouter(): void {
-  window.addEventListener("hashchange", renderRoute);
+  window.addEventListener("popstate", renderRoute);
   renderRoute();
 }

@@ -12,7 +12,7 @@ export function bindDashboard(): void {
 
   logoutButton.addEventListener("click", () => {
     clearUserSession();
-    navigate("");
+    navigate("/");
   });
 }
 

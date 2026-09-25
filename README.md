@@ -58,10 +58,10 @@ npm run css:build
 
 This project uses client-side hash-based routing with a lightweight router.
 
-- Home: `#/`
-- Dashboard: `#/dashboard`
-- Sign up: `#/signup`
-- Sign in: `#/signin`
+- Home: `/`
+- Dashboard: `/dashboard`
+- Sign up: `/signup`
+- Sign in: `/signin`
 
 ## Authentication flow
 
