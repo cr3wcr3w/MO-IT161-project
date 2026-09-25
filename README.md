@@ -2,6 +2,11 @@
 
 A small TypeScript/Vite app for managing incident reporting with role-based sign-up flows.
 
+Application Development Workflow Worksheet Link: [Click This](https://docs.google.com/spreadsheets/d/1C-wW2bvE4yw-rXKVVgnWuuIV_vbb4lYJ-UH7wK0LbYA/edit?usp=sharing)
+
+## AI Use Statement
+- AI was used to assist in generating the website design concept and supporting visual mockup shown in [image](https://github.com/cr3wcr3w/MO-IT161-project/blob/main/docs-img/design.png) 
+
 ## Setup
 
 Install the project dependencies:
