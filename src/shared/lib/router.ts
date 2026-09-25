@@ -80,7 +80,7 @@ function renderRoute(): void {
       bindSignUpForm();
       showPopup({
         position: "bottom-right",
-        description: "Signup is not functional, just for demo purpose",
+        description: "After you Signup, this will redirect you to dashboard page",
       });
       break;
     case "dashboard":

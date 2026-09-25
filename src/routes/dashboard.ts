@@ -11,14 +11,8 @@ export function bindDashboard(): void {
   }
 
   logoutButton.addEventListener("click", () => {
-    // disabled button
-    logoutButton.disabled = true;
-    setTimeout(() => {
-      clearUserSession();
-
-      navigate("");
-    }, 5);
-    logoutButton.disabled = false;
+    clearUserSession();
+    navigate("");
   });
 }
 
