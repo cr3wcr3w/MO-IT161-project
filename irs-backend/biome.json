@@ -9,6 +9,7 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"**/src/**/*",
+			"drizzle.config.ts",
 			"**/.vscode/**/*",
 			"!**/dist/**/*",
 			"!**/node_modules/**/*"

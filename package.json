@@ -27,6 +27,10 @@
     "biome:write": "npm run biome:write --workspace=irs-backend && npm run biome:write --workspace=irs-frontend",
     "biome:check": "npm run biome:check --workspace=irs-backend && npm run biome:check --workspace=irs-frontend",
 
+    "drizzle:generate": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:generate --workspace=irs-backend', { stdio: 'inherit' })\"",
+    "drizzle:migrate": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:migrate --workspace=irs-backend', { stdio: 'inherit' })\"",
+    "drizzle:studio": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:studio --workspace=irs-backend', { stdio: 'inherit' })\"",
+
     "docker:start": "docker compose up --build",
     "docker:stop": "docker compose down",
     "docker:clean": "docker compose down -v",
