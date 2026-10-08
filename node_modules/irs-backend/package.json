@@ -1,0 +1,24 @@
+{
+	"name": "irs-backend",
+	"engines": {
+		"node": "24.x"
+	},
+	"type": "module",
+	"scripts": {
+		"dev": "node --env-file=../.env --import tsx/esm --watch src/index.ts",
+		"build": "tsc",
+		"start": "node --env-file=../.env dist/index.js",
+		"biome:write": "biome check --write",
+		"biome:check": "biome check"
+	},
+	"dependencies": {
+		"@hono/node-server": "^2.1.1",
+		"hono": "^4.13.7"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.12",
+		"@types/node": "^26.1.1",
+		"tsx": "^4.23.0",
+		"typescript": "^7.0.2"
+	}
+}

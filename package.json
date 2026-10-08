@@ -1,0 +1,35 @@
+{
+  "name": "mo-it161-project",
+  "private": true,
+  "workspaces": [
+    "irs-backend",
+    "irs-frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=irs-backend\" \"npm run dev --workspace=irs-frontend\"",
+
+    "dev:backend": "npm run dev --workspace=irs-backend",
+    "dev:frontend": "npm run dev --workspace=irs-frontend",
+
+    "build": "npm run build --workspace=irs-backend && npm run build --workspace=irs-frontend",
+
+    "build:backend": "npm run build --workspace=irs-backend",
+    "build:frontend": "npm run build --workspace=irs-frontend",
+
+    "start": "concurrently \"npm run start --workspace=irs-backend\" \"npm run preview --workspace=irs-frontend -- --host 0.0.0.0\"",
+
+    "start:backend": "npm run start --workspace=irs-backend",
+    "start:frontend": "npm run preview --workspace=irs-frontend -- --host 0.0.0.0",
+
+    "biome:write": "npm run biome:write --workspace=irs-backend && npm run biome:write --workspace=irs-frontend",
+    "biome:check": "npm run biome:check --workspace=irs-backend && npm run biome:check --workspace=irs-frontend",
+
+    "docker:start": "docker compose up --build",
+    "docker:stop": "docker compose down",
+    "docker:clean": "docker compose down -v",
+    "docker:restart": "docker compose down && docker compose up --build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
