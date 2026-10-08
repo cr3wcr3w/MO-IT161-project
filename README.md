@@ -16,6 +16,14 @@
 
 - This project follows the coding standards and conventions defined in the following guide in [View Coding Standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a) 
 
+## Architecture & Conventions
+
+- The frontend follows a **feature-based architecture**, organizing code around application features rather than purely technical concerns.
+- The backend also follows a **feature-based architecture**, grouping related routes, business logic, database access, and validation by feature.
+- **Functional programming principles** are used where appropriate, particularly pure functions, immutability, composition, and separation of side effects.
+- The backend follows a **Functional Core**, Imperative Shell approach where practical, keeping business logic separate from HTTP and database operations.
+- **Single Responsibility Principle (SRP)** is used to keep functions and modules focused on a clear responsibility.
+
 ---
 
 ## Setup
