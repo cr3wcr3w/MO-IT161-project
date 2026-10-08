@@ -6,8 +6,15 @@ Application Development Workflow Worksheet Link: [Click This](https://docs.googl
 
 ## AI Use Statement
 
-- AI was used to assist in generating the website design concept and supporting visual mockup shown in [View design mockup](docs/docs-img/design.png) ![Design mockup](docs/docs-img/design.png)
+- AI was used to assist in generating the website design concept and supporting visual mockup shown in [View Design Mockup](docs/docs-img/design.png)
 
+## GitHub Convention
+
+This project also includes a convention file to standardize development practices in [View Convention File](docs/docs-github-convention/github_convention.md)
+
+## Coding Standard
+
+This project follows the coding standards and conventions defined in the following guide in [View Coding Standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a) 
 
 ## Setup
 
