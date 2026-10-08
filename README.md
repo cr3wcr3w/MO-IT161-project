@@ -1,8 +1,8 @@
 # MO-IT161 Project
 
-A TypeScript/Vite app for managing incident reporting with role-based sign-up flows.
+- A full-stack TypeScript application built with React, Vite, Hono, and Drizzle ORM for managing incident reports
 
-Application Development Workflow Worksheet Link: [Click This](https://docs.google.com/spreadsheets/d/1C-wW2bvE4yw-rXKVVgnWuuIV_vbb4lYJ-UH7wK0LbYA/edit?usp=sharing)
+- Application Development Workflow Worksheet Link: [Click This](https://docs.google.com/spreadsheets/d/1C-wW2bvE4yw-rXKVVgnWuuIV_vbb4lYJ-UH7wK0LbYA/edit?usp=sharing)
 
 ## AI Use Statement
 
@@ -10,11 +10,11 @@ Application Development Workflow Worksheet Link: [Click This](https://docs.googl
 
 ## GitHub Convention
 
-This project also includes a convention file to standardize development practices in [View Convention File](docs/docs-github-convention/github_convention.md)
+- This project also includes a convention file to standardize development practices in [View Convention File](docs/docs-github-convention/github_convention.md)
 
 ## Coding Standard
 
-This project follows the coding standards and conventions defined in the following guide in [View Coding Standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a) 
+- This project follows the coding standards and conventions defined in the following guide in [View Coding Standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a) 
 
 ## Setup
 
