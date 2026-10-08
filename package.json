@@ -1,6 +1,9 @@
 {
   "name": "mo-it161-project",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "workspaces": [
     "irs-backend",
     "irs-frontend"
