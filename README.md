@@ -24,6 +24,29 @@
 - The backend follows a **Functional Core**, Imperative Shell approach where practical, keeping business logic separate from HTTP and database operations.
 - **Single Responsibility Principle (SRP)** is used to keep functions and modules focused on a clear responsibility.
 
+## Project Structure
+ - This project uses a monorepo setup managed with npm Workspaces. The frontend and backend are maintained as separate workspaces within the same repository while sharing the same root project configuration and dependency management.
+
+```bash
+    MO-IT161-project/  
+    ├── irs-backend/ 
+    │ ├── src/ 
+    │ └── package.json 
+    │ ├── irs-frontend/ 
+    │ ├── src/ 
+    │ └── package.json 
+    │ 
+    ├── .github/ 
+    ├── docs/ 
+    ├── .gitignore/  
+    ├── docker-compose.yml 
+    ├── Dockerfile 
+    ├── package-lock.json 
+    ├── package.json 
+    ├── README.md 
+    └── sample.env 
+```
+
 ---
 
 ## Setup
