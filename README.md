@@ -1,57 +1,72 @@
 # MO-IT161 Project
 
-## Requirements
+A TypeScript/Vite app for managing incident reporting with role-based sign-up flows.
 
-- Node.js 24.x
-- npm
-- Docker with Docker Compose, for development mode only
+Application Development Workflow Worksheet Link: [Click This](https://docs.google.com/spreadsheets/d/1C-wW2bvE4yw-rXKVVgnWuuIV_vbb4lYJ-UH7wK0LbYA/edit?usp=sharing)
 
-The project uses one root environment file: `.env`. If it does not exist, the setup script creates it from `sample.env`. Existing `.env` values are preserved.
+## AI Use Statement
+
+- AI was used to assist in generating the website design concept and supporting visual mockup shown in [View design mockup](docs/docs-img/design.png) ![Design mockup](docs/docs-img/design.png)
+
 
 ## Setup
 
-Run the setup script from the repository root:
+Install the dependencies from the repository root:
 
 ```bash
-./setup.sh --dev
+npm install
 ```
 
-On Windows Git Bash, use the same command. The script installs dependencies, starts PostgreSQL in detached mode, and starts the backend and frontend in development mode. Setup output is cleared before the final status summary, and application output is hidden. No log files are created.
+Create the environment file from the provided sample:
+
+```bash
+cp sample.env .env
+```
+
+Then edit `.env` if necessary.
+
+Example:
+
+```env
+BACKEND_PORT=8000
+FRONTEND_PORT=3000
+
+POSTGRES_DB=mydatabase
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_PORT=5432
+
+DATABASE_URL=postgresql://user:password@localhost:5432/mydatabase
+```
+
+### Environment Variables
+
+* **Backend** uses `DATABASE_URL` and `BACKEND_PORT`.
+* **Frontend** uses `FRONTEND_PORT`.
+* **Docker/PostgreSQL** uses `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_PORT`.
+
+### Start PostgreSQL
+
+Start the PostgreSQL Docker container:
+
+```bash
+npm run docker:start
+```
+
+> **Alternative:** You can use [Neon](https://neon.com/) instead of running PostgreSQL locally with Docker. Create a database on Neon and copy the provided connection string into `DATABASE_URL` in `.env`.
+
+### Start the Applications
+
+In another terminal, run:
+
+```bash
+npm run dev
+```
+
+This starts both the frontend and backend concurrently.
 
 Development URLs:
 
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:8000`
-- PostgreSQL: `localhost:5432`
-
-Press `Ctrl+C` to stop the development servers. The script automatically runs `docker compose down`, which removes the PostgreSQL container but keeps the named database volume.
-
-## Production
-
-```bash
-./setup.sh --prod
-```
-
-Production mode installs dependencies, builds both applications, and runs the built backend and frontend preview. It does not start or use Docker/PostgreSQL. Setup output is cleared before the final status summary, and application output is hidden. No log files are created.
-
-Production URLs:
-
-- Frontend preview: `http://localhost:3000`
-- Backend: `http://localhost:8000`
-
-Press `Ctrl+C` to stop both production processes.
-
-## Manual Docker Commands
-
-Development PostgreSQL can also be managed manually:
-
-```bash
-docker compose up -d --build
-docker compose down
-```
-
-`docker compose down` removes the container but does not remove the `irs-postgres-data` volume. To delete the database data as well:
-
-```bash
-docker compose down --volumes
-```
+* Frontend: `http://localhost:3000`
+* Backend: `http://localhost:8000`
+* PostgreSQL: `localhost:5432`
