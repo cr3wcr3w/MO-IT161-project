@@ -84,9 +84,9 @@ BETTER_AUTH_URL=http://localhost:3000
 
 ### Environment Variables
 
-* **Backend** uses `DATABASE_URL` and `BACKEND_PORT`.
+* **Backend** uses `DATABASE_URL`, `BACKEND_PORT`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL`.
 * **Frontend** uses `FRONTEND_PORT`.
-* **Docker/PostgreSQL** uses `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_PORT`.
+* **Docker/PostgreSQL** uses `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_PORT`,.
 
 ### Start PostgreSQL
 
@@ -115,6 +115,33 @@ DATABASE_URL=postgresql://user:password@host:5432/database
 For example, you can use [Neon](https://neon.com/) or another PostgreSQL provider.
 
 > **Note:** Docker is only provided as a convenient way to run PostgreSQL locally. It is not required as long as you have access to a PostgreSQL database.
+
+### Database Migrations
+
+This project uses Drizzle ORM to manage database schema migrations.
+
+After configuring .env and ensuring your PostgreSQL database is running and accessible, generate migration files when your schema changes:
+```bash 
+npm run drizzle:generate 
+```
+
+Apply pending migrations to the database:
+
+```bash
+npm run drizzle:migrate
+```
+
+To open Drizzle Studio and inspect your database:
+
+```bash
+npm run drizzle:studio
+```
+  - `drizzle:generate` generates migration files from your schema changes.
+  - `drizzle:migrate` applies the generated migrations to your database.
+  - `drizzle:studio` opens the database browser.
+
+These commands load the root .env through the configured Drizzle setup. You do not need a separate .env file inside irs-backend.
+
 
 ### Start the Applications
 
