@@ -50,6 +50,7 @@
 ---
 
 ## Setup
+[Watch the Setup Demo](https://drive.google.com/file/d/1Wr1D5pHAr6f2o3X1TU8Dn9IX0wzZVsDX/view?usp=sharing)
 
 Install the dependencies from the repository root:
 
