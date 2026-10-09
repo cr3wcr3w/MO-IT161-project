@@ -158,20 +158,3 @@ Development URLs:
 * Frontend: `http://localhost:3000`
 * Backend: `http://localhost:8000`
 * PostgreSQL: `localhost:5432` *(only when using local PostgreSQL through Docker)*
-
-
-### Start the Applications
-
-In another terminal, run:
-
-```bash
-npm run dev
-```
-
-This starts both the frontend and backend concurrently.
-
-Development URLs:
-
-* Frontend: `http://localhost:3000`
-* Backend: `http://localhost:8000`
-* PostgreSQL: `localhost:5432`
