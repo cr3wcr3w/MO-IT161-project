@@ -82,7 +82,7 @@ BETTER_AUTH_URL=http://localhost:3000
 ```
 > Generate a secure BETTER_AUTH_SECRET using `openssl rand -base64 32` and add the generated value to your .env file.
 
-### Environment Variables
+Environment Variables:
 
 * **Backend** uses `DATABASE_URL`, `BACKEND_PORT`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL`.
 * **Frontend** uses `FRONTEND_PORT`.
