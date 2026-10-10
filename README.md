@@ -143,6 +143,27 @@ npm run drizzle:studio
 
 These commands load the root .env through the configured Drizzle setup. You do not need a separate .env file inside irs-backend.
 
+### Database Seeding
+
+The project includes a database seed script to populate the database with default roles and test accounts for development and testing.
+
+After applying the database migrations, run the following command from the repository root:
+
+```bash
+npm run drizzle:seed
+```
+
+This command seeds the database with the following roles and test users:
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@example.com` | `12345678` |
+| Triage | `triage@example.com` | `12345678` |
+| Researcher | `researcher@example.com` | `12345678` |
+
+**Note:** Run the seed command against your development database before testing authentication through the application or Postman. The seed script creates missing users and assigns their roles. Existing users are not automatically updated with a new password.
+
+These credentials are intended for development and testing only. Do not use them in production.
 
 ### Start the Applications
 
