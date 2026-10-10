@@ -12,7 +12,8 @@
 		"biome:check": "biome check",
 		"drizzle:generate": "npx drizzle-kit generate",
 		"drizzle:migrate": "npx drizzle-kit migrate",
-		"drizzle:studio": "npx drizzle-kit studio"
+		"drizzle:studio": "npx drizzle-kit studio",
+		"drizzle:seed": "tsx src/seeds/main.ts"
 	},
 	"dependencies": {
 		"@better-auth/drizzle-adapter": "^1.7.7",

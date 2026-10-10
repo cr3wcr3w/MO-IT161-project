@@ -30,6 +30,7 @@
     "drizzle:generate": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:generate --workspace=irs-backend', { stdio: 'inherit' })\"",
     "drizzle:migrate": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:migrate --workspace=irs-backend', { stdio: 'inherit' })\"",
     "drizzle:studio": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:studio --workspace=irs-backend', { stdio: 'inherit' })\"",
+    "drizzle:seed": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:seed --workspace=irs-backend', { stdio: 'inherit' })\"",
 
     "docker:start": "docker compose up --build",
     "docker:stop": "docker compose down",

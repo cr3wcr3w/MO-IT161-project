@@ -1,5 +1,13 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, pgSchema, text, timestamp } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	index,
+	pgSchema,
+	primaryKey,
+	text,
+	timestamp,
+	uuid,
+} from "drizzle-orm/pg-core";
 
 export const authSchema = pgSchema("auth");
 
@@ -94,3 +102,28 @@ export const accountRelations = relations(account, ({ one }) => ({
 		references: [user.id],
 	}),
 }));
+
+export const roles = authSchema.table("roles", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	name: text("role").notNull().unique(),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const userRoles = authSchema.table(
+	"user_roles",
+	{
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+
+		roleId: uuid("role_id")
+			.notNull()
+			.references(() => roles.id, { onDelete: "restrict" }),
+
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+	},
+	(table) => [
+		primaryKey({ columns: [table.userId, table.roleId] }),
+		index("user_roles_role_id_idx").on(table.roleId),
+	],
+);
