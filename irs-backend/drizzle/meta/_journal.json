@@ -15,6 +15,13 @@
       "when": 1791638696461,
       "tag": "0001_sloppy_ikaris",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791662540335,
+      "tag": "0002_unique_kree",
+      "breakpoints": true
     }
   ]
 }

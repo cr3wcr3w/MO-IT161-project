@@ -23,6 +23,7 @@ export const user = authSchema.table("user", {
 		.defaultNow()
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
+	deletedAt: timestamp("deleted_at"),
 });
 
 export const session = authSchema.table(
