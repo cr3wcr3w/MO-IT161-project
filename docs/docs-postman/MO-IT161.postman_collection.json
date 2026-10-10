@@ -1,7 +1,8 @@
 {
   "info": {
-    "_postman_id": "f3ad654a-17db-4c1b-8a71-37dcbb17ba35",
+    "_postman_id": "7bbabc6b-aef1-44dd-b236-09542334a097",
     "name": "MO-IT161",
+    "description": "# MO-IT161 — Authentication API\n\n## Overview\n\nThis Postman collection provides requests for testing the application's authentication API powered by Better Auth. It covers user registration, email/password sign-in, session retrieval, and sign-out.\n\nThe collection uses reusable variables to simplify API configuration and includes predefined test accounts for the Admin, Triage, and Researcher roles.\n\n## Authentication Endpoints\n\n| Request | Method | Endpoint | Description |\n| --- | --- | --- | --- |\n| Sign Up - Email | `POST` | `/api/auth/sign-up/email` | Register a new user with a name, email, and password. |\n| Sign In - Email | `POST` | `/api/auth/sign-in/email` | Authenticate an existing user and establish a session. |\n| Get Session | `GET` | `/api/auth/get-session` | Retrieve the current authenticated user's session information. |\n| Sign Out | `POST` | `/api/auth/sign-out` | End the current authenticated session. |\n\nAll endpoints use the `{{baseUrl}}` variable as their base URL.\n\n## Variables\n\nThe collection uses the following variables to configure requests without hardcoding connection details or test credentials.\n\n| Variable | Default Value | Description |\n| --- | --- | --- |\n| `apiHost` | `127.0.0.1` | IP address or hostname of the API server. |\n| `apiPort` | `8000` | Port on which the API server listens. |\n| `baseUrl` | `http://127.0.0.1:8000` | Base URL used by all API requests. |\n| `frontendOrigin` | `http://localhost:3000` | Frontend origin sent with authentication requests. |\n| `adminEmail` | `admin@example.com` | Email address of the seeded Admin account. |\n| `triageEmail` | `triage@example.com` | Email address of the seeded Triage account. |\n| `researcherEmail` | `researcher@example.com` | Email address of the seeded Researcher account. |\n| `password` | `12345678` | Shared password for the seeded test accounts. |\n\n### Global and Collection Variables\n\n| Scope | Purpose |\n| --- | --- |\n| Collection variables | Keep configuration and test data associated with this collection for easier sharing and maintenance. |\n| Global variables | Make variables available across collections in the Postman workspace. |\n| Environment variables | Support separate configurations for development, staging, and production environments. |\n\nThe supplied collection defines its variables at the collection level. If you use Global or Environment variables with the same names, remember that Postman variable scope and precedence can affect which value is resolved.\n\nFor another machine or device on your local network, update `apiHost` to the API server's LAN IP address. Ensure the frontend origin matches the origin allowed by your backend configuration.\n\n## Seeded Test Accounts\n\nThe database seed script creates the default roles and associated test users.\n\n| Role | Email | Password |\n| --- | --- | --- |\n| Admin | `admin@example.com` | `12345678` |\n| Triage | `triage@example.com` | `12345678` |\n| Researcher | `researcher@example.com` | `12345678` |\n\nRun the seed script against your development database before testing these accounts. The script creates missing users and assigns their roles. Existing users are not automatically updated with a new password.\n\n## Development Setup\n\n1. Start the PostgreSQL database and API server.\n    \n2. Apply the Drizzle database migrations.\n    \n3. Run the database seed script in development mode to create the default roles and test accounts.\n    \n4. Import the Postman collection.\n    \n5. Configure the collection variables or select the appropriate Postman environment.\n    \n6. Send a sign-in request using one of the seeded accounts.\n    \n7. Test **Get Session** to verify that the session cookie is retained.\n    \n8. Send **Sign Out** using the same Postman cookie session.\n    \n\n## Request Requirements\n\n| Requirement | Details |\n| --- | --- |\n| Content type | Use `application/json` for requests that send JSON bodies. |\n| Origin | Set the `Origin` header to `{{frontendOrigin}}` where required by the authentication configuration. |\n| Session management | Reuse the same Postman cookie jar for sign-in, session retrieval, and sign-out. |\n| Registration | Supply a unique email address, a name, and a valid password. |\n| Sign-out body | The current request sends an empty JSON object (`{}`). |\n| Database | PostgreSQL with the required Drizzle migrations applied. |\n\n## Security Notes\n\n- Seeded credentials are for local development and testing only.\n    \n- Do not use the default test accounts or shared password in production.\n    \n- Restrict database seeding to development or explicitly authorized test environments.\n    \n- Avoid committing real credentials, secrets, or production tokens to the collection.\n    \n- Use environment-specific variables and appropriate access controls when testing deployed environments.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "42782865"
   },
@@ -10,60 +11,22 @@
       "name": "Auth",
       "item": [
         {
-          "name": "New Request",
+          "name": "Sign Up - Email",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               },
               {
                 "key": "Origin",
-                "value": "http://localhost:3000",
-                "type": "text"
+                "value": "{{frontendOrigin}}"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"johddddededdn@example.com\",\r\n  \"password\": \"password123\"\r\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8000/api/auth/sign-out",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8000",
-              "path": [
-                "api",
-                "auth",
-                "sign-out"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/api/auth/signup",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Origin",
-                "value": "http://localhost:3000",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"email\": \"johndoe@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "raw": "{\n  \"email\": \"johndoe@example.com\",\n  \"password\": \"password123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -71,60 +34,159 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8000/api/auth/sign-up/email",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/api/auth/sign-up/email",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8000",
               "path": [
                 "api",
                 "auth",
                 "sign-up",
                 "email"
               ]
-            }
+            },
+            "description": "Register a new user. Better Auth expects a name, email, and password. Use a unique email address."
           },
           "response": []
         },
         {
-          "name": "/api/auth/sign-in/email",
+          "name": "Sign In - Email",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               },
               {
                 "key": "Origin",
-                "value": "http://localhost:3000",
-                "type": "text"
+                "value": "{{frontendOrigin}}"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"johndoe@example.com\",\r\n  \"password\": \"password123\"\r\n}"
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
-              "raw": "http://localhost:8000/api/auth/sign-in/email",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/api/auth/sign-in/email",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8000",
               "path": [
                 "api",
                 "auth",
                 "sign-in",
                 "email"
               ]
-            }
+            },
+            "description": "Authenticate an existing user. For development, use a seeded account such as admin@example.com with password 12345678. Postman should save the returned session cookie."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{frontendOrigin}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/get-session",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "get-session"
+              ]
+            },
+            "description": "Retrieve the current session and user information. Send this request after signing in to verify that the session cookie is being retained."
+          },
+          "response": []
+        },
+        {
+          "name": "Sign Out",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Origin",
+                "value": "{{frontendOrigin}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-out",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "sign-out"
+              ]
+            },
+            "description": "Sign out the currently authenticated user and invalidate the current session. Send this request after signing in, using the same Postman cookie jar. No request body is required."
           },
           "response": []
         }
-      ]
+      ],
+      "description": "Better Auth email/password authentication endpoints. Run the development seed before testing the predefined accounts."
+    }
+  ],
+  "variable": [
+    {
+      "key": "apiHost",
+      "value": "127.0.0.1"
+    },
+    {
+      "key": "apiPort",
+      "value": "8000"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "frontendOrigin",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "adminEmail",
+      "value": "admin@example.com"
+    },
+    {
+      "key": "triageEmail",
+      "value": "triage@example.com"
+    },
+    {
+      "key": "researcherEmail",
+      "value": "researcher@example.com"
+    },
+    {
+      "key": "password",
+      "value": "12345678"
     }
   ]
 }
