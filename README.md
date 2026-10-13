@@ -24,6 +24,16 @@
 - The backend follows a **Functional Core**, Imperative Shell approach where practical, keeping business logic separate from HTTP and database operations.
 - **Single Responsibility Principle (SRP)** is used to keep functions and modules focused on a clear responsibility.
 
+## Database Schema Overview
+
+The project uses PostgreSQL and Drizzle ORM, with three schemas to organize the Incident Reporting System (Incident Report System):
+
+- **`auth`** — Manages user authentication, sessions, accounts, and role-based access control (RBAC) using Better Auth.
+- **`incident`** — Handles incident reports, report statuses, and report timelines.
+- **`logging`** — Separates application logs for debugging and monitoring from audit logs for tracking significant user actions and data changes.
+
+Each schema has a distinct responsibility, improving maintainability and keeping authentication, incident management, and logging concerns organized.
+
 ## Project Structure
  - This project uses a monorepo setup managed with npm Workspaces. The frontend and backend are maintained as separate workspaces within the same repository while sharing the same root project configuration and dependency management.
 
@@ -80,6 +90,8 @@ POSTGRES_PORT=5432
 DATABASE_URL=postgresql://user:password@localhost:5432/mydatabase
 BETTER_AUTH_SECRET=Z0wlLO28ImINvI1ONrWmhSp8KqGCklLu
 BETTER_AUTH_URL=http://localhost:3000
+
+NODE_ENV=development
 ```
 > Generate a secure BETTER_AUTH_SECRET using `openssl rand -base64 32` and add the generated value to your .env file.
 
@@ -88,6 +100,27 @@ Environment Variables:
 * **Backend** uses `DATABASE_URL`, `BACKEND_PORT`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL`.
 * **Frontend** uses `FRONTEND_PORT`.
 * **Docker/PostgreSQL** uses `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_PORT`,.
+
+### Logging Configuration
+
+The backend uses Winston for development logging and debugging.
+
+Add the following environment variable to your `.env` file:
+
+```env
+NODE_ENV=development
+```
+
+When `NODE_ENV` is set to `development`, Winston displays colored console logs to help developers troubleshoot application behavior.
+
+Available logging methods include:
+
+- `logger.debug()` — Detailed debugging information.
+- `logger.info()` — General application events.
+- `logger.warn()` — Unexpected conditions.
+- `logger.error()` — Errors and failures.
+
+Winston console logging is enabled only during development. Production logging and persistent application logs are handled separately when configured.
 
 ### Start PostgreSQL
 

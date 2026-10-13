@@ -22,6 +22,13 @@
       "when": 1791662540335,
       "tag": "0002_unique_kree",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791894698839,
+      "tag": "0003_smiling_talos",
+      "breakpoints": true
     }
   ]
 }
