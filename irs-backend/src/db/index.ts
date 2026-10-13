@@ -7,7 +7,7 @@ if (!databaseUrl) {
 	throw new Error("DATABASE_URL is not defined");
 }
 
-const pool = new Pool({
+export const pool = new Pool({
 	connectionString: databaseUrl,
 });
 
