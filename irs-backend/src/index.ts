@@ -1,7 +1,7 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import { notFoundHandler } from "./shared/middleware/not-found.js";
+import { notFoundMiddleware } from "./shared/middleware/not-found.js";
 import { authRoutes } from "./v1/auth/auth.routes.js";
 
 const app = new Hono();
@@ -15,7 +15,7 @@ app.use(logger());
 
 // routes
 app.route("/api/v1/auth", authRoutes);
-app.notFound(notFoundHandler);
+app.notFound(notFoundMiddleware);
 
 serve(
 	{
