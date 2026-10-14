@@ -1,0 +1,33 @@
+
+{
+  
+  // Brackets and indentation
+  // Colors matching brackets
+  "editor.bracketPairColorization.enabled": true,
+  // Shows guides for nested brackets
+  "editor.guides.bracketPairs": "active",
+  // Shows indentation lines
+  "editor.guides.indentation": true,
+  // Automatically inserts closing brackets
+  "editor.autoClosingBrackets": "always",
+  // Automatically inserts closing quotes
+  "editor.autoClosingQuotes": "always",
+  // Automatically adjusts indentation
+  "editor.autoIndent": "full",
+  // Sets indentation width
+  "editor.tabSize": 2,
+  // Uses spaces instead of tab characters
+  "editor.insertSpaces": true,
+
+  // Code navigation
+  // Keeps enclosing code context visible
+  "editor.stickyScroll.enabled": true,
+  // Highlights occurrences of the current symbol or text
+  "editor.occurrencesHighlight": "singleFile",
+  // Highlights matching text when you select something
+  "editor.selectionHighlight": true,
+  // Controls the initial autocomplete selection
+  "editor.suggestSelection": "first",
+  // Formats pasted code
+  "editor.formatOnPaste": true,
+}

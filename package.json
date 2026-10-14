@@ -1,31 +1,43 @@
 {
   "name": "mo-it161-project",
-  "version": "0.0.0",
   "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "check": "npm run check:format && npm run check:lint",
-    "fix": "npm run fix:format && npm run fix:lint",
-    "check:format": "oxfmt --check",
-    "check:lint": "oxlint",
-    "fix:format": "oxfmt",
-    "fix:lint": "oxlint --fix",
-    "css:build": "npx @tailwindcss/cli -i ./src/shared/styles/config.css -o ./src/shared/styles/global.css --watch"
+  "engines": {
+    "node": "24.x"
   },
-  "dependencies": {
-    "@tailwindcss/cli": "^4.3.3",
-    "daisyui": "^5.7.22",
-    "lucide": "^1.34.0",
-    "nanostores": "^1.5.2",
-    "tailwindcss": "^4.3.3"
+  "workspaces": [
+    "irs-backend",
+    "irs-frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=irs-backend\" \"npm run dev --workspace=irs-frontend\"",
+
+    "dev:backend": "npm run dev --workspace=irs-backend",
+    "dev:frontend": "npm run dev --workspace=irs-frontend",
+
+    "build": "npm run build --workspace=irs-backend && npm run build --workspace=irs-frontend",
+
+    "build:backend": "npm run build --workspace=irs-backend",
+    "build:frontend": "npm run build --workspace=irs-frontend",
+
+    "start": "concurrently \"npm run start --workspace=irs-backend\" \"npm run preview --workspace=irs-frontend -- --host 0.0.0.0\"",
+
+    "start:backend": "npm run start --workspace=irs-backend",
+    "start:frontend": "npm run preview --workspace=irs-frontend -- --host 0.0.0.0",
+
+    "biome:write": "npm run biome:write --workspace=irs-backend && npm run biome:write --workspace=irs-frontend",
+    "biome:check": "npm run biome:check --workspace=irs-backend && npm run biome:check --workspace=irs-frontend",
+
+    "drizzle:generate": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:generate --workspace=irs-backend', { stdio: 'inherit' })\"",
+    "drizzle:migrate": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:migrate --workspace=irs-backend', { stdio: 'inherit' })\"",
+    "drizzle:studio": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:studio --workspace=irs-backend', { stdio: 'inherit' })\"",
+    "drizzle:seed": "node --env-file=.env -e \"require('child_process').execSync('npm run drizzle:seed --workspace=irs-backend', { stdio: 'inherit' })\"",
+
+    "docker:start": "docker compose up --build",
+    "docker:stop": "docker compose down",
+    "docker:clean": "docker compose down -v",
+    "docker:restart": "docker compose down && docker compose up --build"
   },
   "devDependencies": {
-    "oxfmt": "^0.65.0",
-    "oxlint": "^1.80.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.2.2"
+    "concurrently": "^9.2.1"
   }
 }
