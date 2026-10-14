@@ -1,17 +1,12 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/api";
+import { env } from "../../config/env.js";
 import { db } from "../../db/index.js";
 import * as authSchema from "../../db/schema/auth.js";
 
-const BETTER_AUTH_URL = process.env.BETTER_AUTH_URL;
-
-if (!BETTER_AUTH_URL) {
-	throw new Error("BETTER_AUTH_URL is not defined");
-}
-
 const auth = betterAuth({
-	trustedOrigins: [BETTER_AUTH_URL],
+	trustedOrigins: [env.BETTER_AUTH_URL],
 
 	database: drizzleAdapter(db, {
 		provider: "pg",
