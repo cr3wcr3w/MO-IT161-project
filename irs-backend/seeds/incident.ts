@@ -1,5 +1,5 @@
-import { db } from "../db/index.js";
-import { statuses } from "../db/schema/incident.js";
+import { db } from "../src/db/index.js";
+import { statuses } from "../src/db/schema/incident.js";
 
 const reportStatusSeeds = [
 	{

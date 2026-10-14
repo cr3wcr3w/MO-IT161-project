@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/index.js";
-import { roles, user, userRoles } from "../db/schema/auth.js";
-import auth from "../lib/auth.js";
+import { db } from "../src/db/index.js";
+import { roles, user, userRoles } from "../src/db/schema/auth.js";
+import auth from "../src/v1/auth/auth.js";
 
 const roleSeeds = [
 	{ name: "admin" },

@@ -1,4 +1,4 @@
-import { pool } from "../db/index.js";
+import { pool } from "../src/db/index.js";
 import { seedRoles, seedUsers } from "./auth.js";
 import { seedReportStatuses } from "./incident.js";
 

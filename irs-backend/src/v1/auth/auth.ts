@@ -1,8 +1,8 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/api";
-import { db } from "../db/index.js";
-import * as authSchema from "../db/schema/auth.js";
+import { db } from "../../db/index.js";
+import * as authSchema from "../../db/schema/auth.js";
 
 const BETTER_AUTH_URL = process.env.BETTER_AUTH_URL;
 
@@ -17,6 +17,7 @@ const auth = betterAuth({
 		provider: "pg",
 		schema: authSchema,
 	}),
+	basePath: "/api/v1/auth",
 	emailAndPassword: {
 		enabled: true,
 	},

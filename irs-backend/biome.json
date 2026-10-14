@@ -12,7 +12,8 @@
 			"drizzle.config.ts",
 			"**/.vscode/**/*",
 			"!**/dist/**/*",
-			"!**/node_modules/**/*"
+			"!**/node_modules/**/*",
+			"seeds/**/*"
 		]
 	},
 	"formatter": {
