@@ -2,7 +2,6 @@ import { z } from "zod";
 
 const EnvSchema = z.object({
 	// Application
-	// NODE_ENV: z.enum(["development", "production"]).default("development"),
 	BACKEND_PORT: z.coerce.number().int().min(1).max(65535).default(8000),
 
 	// Database

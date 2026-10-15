@@ -90,37 +90,15 @@ POSTGRES_PORT=5432
 DATABASE_URL=postgresql://user:password@localhost:5432/mydatabase
 BETTER_AUTH_SECRET=Z0wlLO28ImINvI1ONrWmhSp8KqGCklLu
 BETTER_AUTH_URL=http://localhost:3000
-
-NODE_ENV=development
+VITE_API_URL=http://localhost:8000
 ```
 > Generate a secure BETTER_AUTH_SECRET using `openssl rand -base64 32` and add the generated value to your .env file.
 
 Environment Variables:
 
 * **Backend** uses `DATABASE_URL`, `BACKEND_PORT`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL`.
-* **Frontend** uses `FRONTEND_PORT`.
+* **Frontend** uses `FRONTEND_PORT`, `VITE_API_URL`
 * **Docker/PostgreSQL** uses `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_PORT`,.
-
-### Logging Configuration
-
-The backend uses Winston for development logging and debugging.
-
-Add the following environment variable to your `.env` file:
-
-```env
-NODE_ENV=development
-```
-
-When `NODE_ENV` is set to `development`, Winston displays colored console logs to help developers troubleshoot application behavior.
-
-Available logging methods include:
-
-- `logger.debug()` — Detailed debugging information.
-- `logger.info()` — General application events.
-- `logger.warn()` — Unexpected conditions.
-- `logger.error()` — Errors and failures.
-
-Winston console logging is enabled only during development. Production logging and persistent application logs are handled separately when configured.
 
 ### Start PostgreSQL
 
