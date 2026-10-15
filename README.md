@@ -1,4 +1,5 @@
 # MO-IT161 Project
+[![Biome Checks](https://github.com/cr3wcr3w/MO-IT161-project/actions/workflows/biome.yml/badge.svg)](https://github.com/cr3wcr3w/MO-IT161-project/actions/workflows/biome.yml)
 
 - A full-stack TypeScript application built with React, Vite, Hono, and Drizzle ORM for managing incident reports
 
