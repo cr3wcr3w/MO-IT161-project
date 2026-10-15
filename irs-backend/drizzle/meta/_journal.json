@@ -29,6 +29,27 @@
       "when": 1791894698839,
       "tag": "0003_smiling_talos",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792056748757,
+      "tag": "0004_open_fabian_cortez",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792058112344,
+      "tag": "0005_funny_leper_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792058362690,
+      "tag": "0006_lonely_stardust",
+      "breakpoints": true
     }
   ]
 }

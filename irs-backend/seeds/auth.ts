@@ -7,6 +7,7 @@ const roleSeeds = [
 	{ name: "admin" },
 	{ name: "triage" },
 	{ name: "researcher" },
+	{ name: "guest" },
 ] as const;
 
 export async function seedRoles() {
@@ -21,21 +22,10 @@ export async function seedRoles() {
 }
 
 const userSeeds = [
-	{
-		name: "Admin User",
-		email: "admin@example.com",
-		role: "admin",
-	},
-	{
-		name: "Triage User",
-		email: "triage@example.com",
-		role: "triage",
-	},
-	{
-		name: "Researcher User",
-		email: "researcher@example.com",
-		role: "researcher",
-	},
+	{ name: "Admin User", email: "admin@example.com" },
+	{ name: "Triage User", email: "triage@example.com" },
+	{ name: "Researcher User", email: "researcher@example.com" },
+	{ name: "Guest User", email: "guest@example.com" },
 ] as const;
 
 export async function seedUsers() {
@@ -44,9 +34,54 @@ export async function seedUsers() {
 	console.log("Seeding users...");
 
 	for (const seed of userSeeds) {
-		// Find the role
+		const [existingUser] = await db
+			.select({ id: user.id })
+			.from(user)
+			.where(eq(user.email, seed.email))
+			.limit(1);
+
+		if (existingUser) {
+			console.log(`User already exists: ${seed.email}`);
+			continue;
+		}
+
+		const result = await auth.api.signUpEmail({
+			body: {
+				name: seed.name,
+				email: seed.email,
+				password,
+			},
+		});
+
+		console.log(`Created user: ${result.user.email}`);
+	}
+
+	console.log("Users seeded successfully!");
+}
+
+const userRoleSeeds = [
+	{ email: "admin@example.com", role: "admin" },
+	{ email: "triage@example.com", role: "triage" },
+	{ email: "researcher@example.com", role: "researcher" },
+	{ email: "guest@example.com", role: "guest" },
+] as const;
+
+export async function seedChangeUserRoles() {
+	console.log("Seeding user roles...");
+
+	for (const seed of userRoleSeeds) {
+		const [existingUser] = await db
+			.select({ id: user.id })
+			.from(user)
+			.where(eq(user.email, seed.email))
+			.limit(1);
+
+		if (!existingUser) {
+			throw new Error(`User "${seed.email}" not found.`);
+		}
+
 		const [role] = await db
-			.select()
+			.select({ id: roles.id })
 			.from(roles)
 			.where(eq(roles.name, seed.role))
 			.limit(1);
@@ -55,45 +90,22 @@ export async function seedUsers() {
 			throw new Error(`Role "${seed.role}" not found.`);
 		}
 
-		// Check whether the user already exists
-		const [existingUser] = await db
-			.select({ id: user.id })
-			.from(user)
-			.where(eq(user.email, seed.email))
-			.limit(1);
-
-		let userId = existingUser?.id;
-
-		// Create the account through Better Auth if needed
-		if (!userId) {
-			const result = await auth.api.signUpEmail({
-				body: {
-					name: seed.name,
-					email: seed.email,
-					password,
-				},
-			});
-
-			userId = result.user.id;
-
-			console.log(`Created user: ${seed.email} with password: ${password}`);
-		} else {
-			console.log(
-				`User already exists: ${seed.email} with password: ${password}`,
-			);
-		}
-
-		// Assign the role through the connection table
+		// Replace the default guest assignment with the intended seed role.
 		await db
 			.insert(userRoles)
 			.values({
-				userId,
+				userId: existingUser.id,
 				roleId: role.id,
 			})
-			.onConflictDoNothing();
+			.onConflictDoUpdate({
+				target: userRoles.userId,
+				set: {
+					roleId: role.id,
+				},
+			});
 
 		console.log(`Assigned role "${seed.role}" to ${seed.email}`);
 	}
 
-	console.log("Users seeded successfully!");
+	console.log("User roles seeded successfully!");
 }

@@ -26,7 +26,7 @@ export const statuses = incidentSchema.table("statuses", {
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const severityEnum = pgEnum("severity", [
+export const severityEnum = pgEnum("severityEnum", [
 	"low", // Minor impact, limited urgency
 	"medium", // Potential impact that needs investigation
 	"high", // Significant risk or suspected compromise

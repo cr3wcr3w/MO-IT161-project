@@ -3,9 +3,11 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import "../shared/styles/main.css";
+import NotFound from "#/features/not-found";
 
 export const Route = createRootRoute({
 	component: RootComponent,
+	notFoundComponent: () => <NotFound />,
 });
 
 function RootComponent() {

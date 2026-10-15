@@ -9,11 +9,11 @@ export enum RateLimitCategory {
 const RATE_LIMIT_CONFIG = {
 	[RateLimitCategory.LENIENT]: {
 		windowMs: 15 * 60 * 1000, // Time window in milliseconds (15 minutes)
-		limit: 100, // Maximum number of requests allowed within the window
+		limit: 300, // Maximum number of requests allowed within the window
 	},
 	[RateLimitCategory.MODERATE]: {
 		windowMs: 15 * 60 * 1000, // Time window in milliseconds (15 minutes)
-		limit: 50, // Suitable for general API endpoints with moderate traffic
+		limit: 100, // Suitable for general API endpoints with moderate traffic
 	},
 	[RateLimitCategory.STRICT]: {
 		windowMs: 15 * 60 * 1000, // Time window in milliseconds (15 minutes)
