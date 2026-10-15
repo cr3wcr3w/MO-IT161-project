@@ -2,10 +2,12 @@ import { relations } from "drizzle-orm";
 import {
 	boolean,
 	index,
+	pgEnum,
 	pgSchema,
 	primaryKey,
 	text,
 	timestamp,
+	unique,
 	uuid,
 } from "drizzle-orm/pg-core";
 
@@ -104,9 +106,16 @@ export const accountRelations = relations(account, ({ one }) => ({
 	}),
 }));
 
+export const roleNameEnum = pgEnum("roleNameEnum", [
+	"admin", // IT preffesional
+	"triage", // the security team
+	"researcher", // the bug hunter
+	"guest", // default
+]);
+
 export const roles = authSchema.table("roles", {
 	id: uuid("id").primaryKey().defaultRandom(),
-	name: text("role").notNull().unique(),
+	name: roleNameEnum("role").notNull().unique(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -124,7 +133,11 @@ export const userRoles = authSchema.table(
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 	},
 	(table) => [
+		// Ensures each user-role pair is unique in the junction table.
 		primaryKey({ columns: [table.userId, table.roleId] }),
+		// Improves query performance when looking up users by role.
 		index("user_roles_role_id_idx").on(table.roleId),
+		// Each user can have only one role.
+		unique("user_roles_user_id_unique").on(table.userId),
 	],
 );
