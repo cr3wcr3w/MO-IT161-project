@@ -1,3 +1,4 @@
+import { createMiddleware } from "hono/factory";
 import { rateLimiter } from "hono-rate-limiter";
 
 export enum RateLimitCategory {
@@ -6,34 +7,40 @@ export enum RateLimitCategory {
 	STRICT = "strict",
 }
 
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+
 const RATE_LIMIT_CONFIG = {
 	[RateLimitCategory.LENIENT]: {
-		windowMs: 15 * 60 * 1000, // Time window in milliseconds (15 minutes)
-		limit: 300, // Maximum number of requests allowed within the window
+		windowMs: RATE_LIMIT_WINDOW_MS,
+		limit: 300,
 	},
 	[RateLimitCategory.MODERATE]: {
-		windowMs: 15 * 60 * 1000, // Time window in milliseconds (15 minutes)
-		limit: 100, // Suitable for general API endpoints with moderate traffic
+		windowMs: RATE_LIMIT_WINDOW_MS,
+		limit: 100,
 	},
 	[RateLimitCategory.STRICT]: {
-		windowMs: 15 * 60 * 1000, // Time window in milliseconds (15 minutes)
-		limit: 10, // Suitable for sensitive endpoints, such as authentication
+		windowMs: RATE_LIMIT_WINDOW_MS,
+		limit: 10,
 	},
 } as const;
 
 /**
  * Creates a rate-limiting middleware for the specified category.
  *
- * @param category - The rate-limit category that determines the request limit and time window.
- * @returns A Hono middleware that limits requests based on the client's IP address.
+ * @param category - The rate-limit category to apply.
+ * @returns A Hono middleware that limits requests by client IP.
  */
 export const rateLimitMiddleware = (category: RateLimitCategory) => {
-	const config = RATE_LIMIT_CONFIG[category];
+	const { windowMs, limit } = RATE_LIMIT_CONFIG[category];
 
-	return rateLimiter({
-		windowMs: config.windowMs,
-		limit: config.limit,
-		// Use IP address as key
-		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
+	const limiter = rateLimiter({
+		windowMs,
+		limit,
+		keyGenerator: (c) =>
+			c.req.header("x-forwarded-for")?.split(",")[0]?.trim() || "unknown",
+	});
+
+	return createMiddleware(async (c, next) => {
+		return limiter(c, next);
 	});
 };
