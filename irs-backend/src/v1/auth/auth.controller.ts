@@ -22,5 +22,6 @@ authController.get("/get-profile", requireAuthMiddleware, async (c) => {
 		return c.json({ message: ReasonPhrases.NOT_FOUND }, StatusCodes.NOT_FOUND);
 	}
 
-	return c.json({ profile }, StatusCodes.OK);
+	// better auth use top level so im not gonna follow our api response format here
+	return c.json(profile, StatusCodes.OK);
 });
