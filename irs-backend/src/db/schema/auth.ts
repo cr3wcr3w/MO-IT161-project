@@ -19,6 +19,7 @@ export const user = authSchema.table("user", {
 	name: text("name").notNull().default(""),
 	email: text("email").notNull().unique(),
 	emailVerified: boolean("email_verified").default(false).notNull(),
+	// Image: Required by Better Auth, but not used by the application.
 	image: text("image"),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at")

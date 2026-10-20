@@ -7,6 +7,7 @@ export default defineConfig({
 		"./src/db/schema/auth.ts",
 		"./src/db/schema/incident.ts",
 		"./src/db/schema/logging.ts",
+		"./src/db/schema/onboarding.ts",
 	],
 	dialect: "postgresql",
 	dbCredentials: {

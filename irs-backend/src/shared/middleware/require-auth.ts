@@ -16,6 +16,7 @@ export const requireAuthMiddleware = createMiddleware<{
 	if (!session) {
 		return c.json(
 			{
+				data: null,
 				message: ReasonPhrases.UNAUTHORIZED,
 			},
 			StatusCodes.UNAUTHORIZED,
