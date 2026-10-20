@@ -4,6 +4,7 @@ import {
 	RateLimitCategory,
 	rateLimitMiddleware,
 } from "../../shared/middleware/rate-limiter.js";
+import { authController } from "./auth.controller.js";
 import auth from "./auth.js";
 
 export const authRoutes = new Hono();
@@ -38,6 +39,10 @@ authRoutes.use(
 	every(rateLimitMiddleware(RateLimitCategory.STRICT)),
 );
 
+// custom routes
+authRoutes.route("/", authController);
+
+// Better Auth catch-all must stay last so custom routes are matched first
 authRoutes.on(["POST", "GET"], "/*", (c) => {
 	return auth.handler(c.req.raw);
 });

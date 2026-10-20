@@ -35,7 +35,10 @@
     "docker:start": "docker compose up --build",
     "docker:stop": "docker compose down",
     "docker:clean": "docker compose down -v",
-    "docker:restart": "docker compose down && docker compose up --build"
+    "docker:restart": "docker compose down && docker compose up --build",
+
+    "check-update:backend": "npx npm-check-updates --cwd irs-backend",
+    "check-update:frontend": "npx npm-check-updates --cwd irs-frontend"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"

@@ -1,12 +1,11 @@
 import type { NotFoundHandler } from "hono";
-import * as HttpStatusCodes from "../constant/http-status/codes.js";
-import * as HttpStatusPhrases from "../constant/http-status/phrases.js";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
 export const notFoundMiddleware: NotFoundHandler = (c) => {
 	return c.json(
 		{
-			message: HttpStatusPhrases.NOT_FOUND,
+			message: ReasonPhrases.NOT_FOUND,
 		},
-		HttpStatusCodes.NOT_FOUND,
+		StatusCodes.NOT_FOUND,
 	);
 };

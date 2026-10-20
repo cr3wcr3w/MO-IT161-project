@@ -1,7 +1,14 @@
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-
-import { Button } from "@/shared/components/ui/button";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { DashboardSkeleton } from "@/features/dashboard/components/dashboard-skeleton";
+import { DefaultContent } from "@/features/dashboard/components/menu/default-content";
+import { DASHBOARD_VIEWS } from "@/features/dashboard/components/views";
+import { useDashboardStore } from "@/features/dashboard/stores/dashboard-store";
+import { AppSidebar } from "@/shared/components/ui/app-sidebar";
+import {
+	SidebarProvider,
+	SidebarTrigger,
+} from "@/shared/components/ui/sidebar";
+import { useProfile } from "@/shared/hooks/use-profile";
 import { authClient } from "@/shared/lib/auth-client";
 
 export const Route = createFileRoute("/dashboard")({
@@ -16,42 +23,35 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function RouteComponent() {
-	const navigate = useNavigate();
-	const { data: session } = authClient.useSession();
-	const [isLoggingOut, setIsLoggingOut] = useState(false);
+	const { profile, nav } = useProfile();
+	const { activeView } = useDashboardStore();
 
-	const handleLogout = async () => {
-		setIsLoggingOut(true);
-
-		try {
-			await authClient.signOut();
-			await navigate({ to: "/signin" });
-		} finally {
-			setIsLoggingOut(false);
-		}
-	};
+	const View = profile && activeView ? DASHBOARD_VIEWS[activeView] : null;
+	const activeLabel = nav.items.find((i) => i.view === activeView)?.label;
 
 	return (
-		<main className="flex min-h-svh items-center justify-center p-6">
-			<div className="w-full max-w-md space-y-4 rounded-lg border p-6">
-				<h1 className="text-2xl font-bold">Dashboard</h1>
+		<SidebarProvider>
+			<AppSidebar nav={nav} />
+			<main className="flex h-svh min-w-0 flex-1 flex-col overflow-hidden bg-background">
+				{/* Top bar: sidebar trigger + current menu label, like a breadcrumb */}
+				<header className="flex h-14 shrink-0 items-center gap-3 border-b px-4">
+					<SidebarTrigger className="cursor-pointer" />
+					<div className="h-5 w-px bg-border" aria-hidden="true" />
+					<span className="text-sm font-medium text-muted-foreground">
+						{activeLabel ?? "Dashboard"}
+					</span>
+				</header>
 
-				<div className="space-y-1">
-					<p className="text-sm text-muted-foreground">
-						Currently logged in as
-					</p>
-					<p className="text-sm text-muted-foreground">{session?.user.email}</p>
+				<div className="flex-1 overflow-y-auto">
+					{!profile ? (
+						<DashboardSkeleton />
+					) : View ? (
+						<View />
+					) : (
+						<DefaultContent />
+					)}
 				</div>
-
-				<Button
-					className="w-full"
-					variant="destructive"
-					onClick={handleLogout}
-					disabled={isLoggingOut}
-				>
-					{isLoggingOut ? "Logging out..." : "Logout"}
-				</Button>
-			</div>
-		</main>
+			</main>
+		</SidebarProvider>
 	);
 }

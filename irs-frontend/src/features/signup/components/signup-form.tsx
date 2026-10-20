@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { BrandMark } from "#/shared/components/ui/brand-mark";
+import { BrandMark } from "@/shared/components/ui/brand-mark";
 import { Button } from "@/shared/components/ui/button";
 import {
 	Field,
@@ -117,7 +117,7 @@ export function SignUpForm({
 
 					{/* Vertically centered form */}
 					<div className="flex min-h-0 flex-1 items-center justify-center py-2">
-						<div className="w-full max-w-[380px]">
+						<div className="w-full max-w-95">
 							<div className="mb-5 space-y-2">
 								<h1 className="text-3xl font-bold leading-tight tracking-tight text-[#111b30] sm:text-4xl">
 									Create an
