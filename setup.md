@@ -58,11 +58,29 @@ Copy the generated value into your `.env` file.
 - **Frontend:** `FRONTEND_PORT` and `VITE_API_URL`.
 - **Docker/PostgreSQL:** `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_PORT`.
 
-**Optional SMTP configuration**
+**Optional SMTP Configuration (Gmail)**
 
-SMTP credentials are optional for local development. If SMTP is not configured, the application can still start, and the generated email verification OTP is printed in the backend terminal for development and testing.
+SMTP is optional for local development. If SMTP is not configured, the application can still start, and verification OTPs can be printed in the backend terminal for testing.
 
-To send verification emails, configure the SMTP variables with valid credentials. If you use Gmail, generate an App Password from your Google Account; do not use your regular Gmail password.
+To enable email delivery through Gmail:
+
+1. **Enable 2-Step Verification** in your [Google Account Security settings](https://myaccount.google.com/security).
+2. **Generate an App Password** from [Google App Passwords](https://myaccount.google.com/apppasswords).
+3. **Update your root `.env` file** with your Gmail credentials:
+
+   ```env
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=your-email@gmail.com
+   SMTP_PASS=your-16-character-app-password
+   ```
+
+   Replace the example values with your Gmail address and generated App Password. Do not use your regular Gmail password.
+
+4. **Restart the backend** to load the updated environment variables.
+
+> **Security:** Never commit your `.env` file or expose your SMTP credentials in source control.
+
 
 ### 3. Start PostgreSQL
 
