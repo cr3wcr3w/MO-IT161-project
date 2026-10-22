@@ -31,8 +31,6 @@ The project aims to provide an organized workflow for handling incident reports,
 - [View Postman API Documentation](/docs/docs-postman/MO-IT161.postman_collection.json)
 - [View Design Mockup](docs/docs-img/design.png)
 - [View GitHub Convention File](docs/docs-github-convention/github_convention.md)
-- [View Coding Standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a)
-
 
 ### AI Use Statement
 
