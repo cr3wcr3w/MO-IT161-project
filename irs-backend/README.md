@@ -1,8 +1,14 @@
-# Backend Documentation 
-- services/routes should have different folder code so that if we need to create another service and remove the existing backend we can easily do it without doing a huge refactoring 
-  - for example; if we need to create another service for email service, we can asily do that by copying the v1/email then nothing changes and the existing backend is still working
-  - we use versiontinig and single respontibility to do this
-# naming convention inside of version, you dont need to follow the existing format like <sample>.service, <sample>.controller, <sample>.route, <sample>.schema
-# in POST request, make sure you validate using zod as middlware
-# follow reponse format 
-{data: <obj> | null, status: <status>}
+# Backend Documentation
+
+- **Service Isolation:** Keep services and their related routes in separate feature folders under the appropriate API version (e.g., `v1/email`). This allows services to be extracted, replaced, or reused with minimal refactoring.
+- **API Versioning and SRP:** Use versioned directories and the Single Responsibility Principle to maintain clear boundaries and independent modules.
+- **Naming Conventions:** Inside each versioned module, use consistent, descriptive file names. Formats such as `.service`, `.controller`, `.routes`, and `.schema` are conventions, not strict requirements.
+- **Request Validation:** Validate `POST` request bodies using Zod middleware before they reach the route handler.
+- **Response Format:** Follow a consistent JSON response structure:
+
+```ts
+{
+  data: object | null;
+  status: number;
+}
+```

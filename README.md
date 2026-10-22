@@ -39,11 +39,11 @@ AI tools were used to assist in developing the website design concept and suppor
 
 ### Architecture and Development Conventions
 
-- **Feature-based architecture:** Frontend and backend modules are organized around application features.
-- **Functional programming principles:** Pure functions, immutability, composition, and separation of side effects are applied where appropriate.
-- **Functional Core, Imperative Shell:** Business logic is separated from HTTP handling and database operations where practical.
-- **Single Responsibility Principle (SRP):** Functions and modules are designed around clear responsibilities.
-- **Consistent coding standards:** Development practices follow the project's [coding standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a).
+- **Feature-based Frontend:** Organizes components, hooks, API functions, and state management by application feature.
+- **Versioned Backend API:** Groups backend modules under versioned directories (e.g., `v1`) to maintain clear API boundaries and support future versions.
+- **RESTful API Design:** Uses resource-oriented routes and appropriate HTTP methods, documented consistently in Postman.
+- **Composition and Reusability:** Composes frontend components and backend functions and middleware into focused, reusable units.
+- **Separation of Concerns:** Separates routes, controllers, services, validation schemas, and database operations according to their responsibilities.
 
 ### Database Schema Overview
 
