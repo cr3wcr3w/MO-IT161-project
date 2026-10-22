@@ -6,6 +6,7 @@ import { env } from "./config/env.js";
 import { errorMiddleware } from "./shared/middleware/error.js";
 import { notFoundMiddleware } from "./shared/middleware/not-found.js";
 import { authRoutes } from "./v1/auth/auth.routes.js";
+import { emailRoutes } from "./v1/email/email.routes.js";
 import { onboardingRoutes } from "./v1/onboarding/onboarding.routes.js";
 
 const app = new Hono();
@@ -30,6 +31,7 @@ app.get("/", (c) => {
 });
 app.route("/api/v1/auth", authRoutes);
 app.route("/api/v1/onboarding", onboardingRoutes);
+app.route("/api/v1/email", emailRoutes);
 
 serve(
 	{
