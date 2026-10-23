@@ -11,6 +11,7 @@ export const onboardingRepository = {
 		const [result] = await db
 			.select({
 				currentStep: steps,
+				completedAt: progress.completedAt,
 			})
 			.from(progress)
 			.leftJoin(steps, eq(progress.currentStepId, steps.id))
@@ -67,5 +68,15 @@ export const onboardingRepository = {
 			.returning();
 
 		return result;
+	},
+
+	async markCompleted(userId: string) {
+		const [result] = await db
+			.update(progress)
+			.set({ completedAt: new Date() })
+			.where(eq(progress.userId, userId))
+			.returning();
+
+		return result ?? null;
 	},
 };

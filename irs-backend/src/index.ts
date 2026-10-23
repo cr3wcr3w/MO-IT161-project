@@ -16,7 +16,7 @@ app.use(
 	"*",
 	cors({
 		origin: env.BETTER_AUTH_URL,
-		allowMethods: ["GET", "POST", "OPTIONS"],
+		allowMethods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 		allowHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 	}),

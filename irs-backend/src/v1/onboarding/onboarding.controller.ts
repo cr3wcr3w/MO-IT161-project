@@ -45,11 +45,16 @@ export const onboardingController = {
 
 		if (!currentProgress?.currentStep) {
 			return c.json(
-				{
-					data: null,
-					message: ReasonPhrases.NOT_FOUND,
-				},
+				{ data: null, message: ReasonPhrases.NOT_FOUND },
 				StatusCodes.NOT_FOUND,
+			);
+		}
+
+		// Already completed
+		if (currentProgress.completedAt) {
+			return c.json(
+				{ data: currentProgress, message: ReasonPhrases.OK },
+				StatusCodes.OK,
 			);
 		}
 
@@ -57,13 +62,13 @@ export const onboardingController = {
 			currentProgress.currentStep.stepOrder,
 		);
 
+		// No next step means the current step is the last one
 		if (!nextStep) {
+			const result = await onboardingRepository.markCompleted(session.user.id);
+
 			return c.json(
-				{
-					data: null,
-					message: ReasonPhrases.CONFLICT,
-				},
-				StatusCodes.CONFLICT,
+				{ data: result, message: ReasonPhrases.OK },
+				StatusCodes.OK,
 			);
 		}
 

@@ -1,0 +1,1 @@
+ALTER TABLE "onboarding"."progress" ADD COLUMN "completed_at" timestamp with time zone;
