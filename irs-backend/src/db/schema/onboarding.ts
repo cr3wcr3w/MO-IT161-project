@@ -3,18 +3,11 @@ import { user } from "./auth.js";
 
 export const onboardingSchema = pgSchema("onboarding");
 
-export const StepStatusEnum = onboardingSchema.enum("step_status", [
-	"PENDING",
-	"IN_PROGRESS",
-	"COMPLETED",
-]);
-
 export const steps = onboardingSchema.table("steps", {
 	id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
 
 	title: text("title").notNull(),
 	description: text("description").notNull(),
-	status: StepStatusEnum("status").notNull().default("PENDING"),
 	stepOrder: integer("order").notNull().unique(),
 
 	createdAt: timestamp("created_at", { withTimezone: true })

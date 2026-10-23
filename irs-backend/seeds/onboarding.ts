@@ -32,7 +32,6 @@ export async function seedOnboarding() {
 			if (!existingStep) {
 				await db.insert(steps).values({
 					...step,
-					status: "PENDING",
 				});
 			}
 		}

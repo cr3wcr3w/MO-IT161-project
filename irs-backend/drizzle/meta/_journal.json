@@ -78,6 +78,13 @@
       "when": 1792500063123,
       "tag": "0010_natural_demogoblin",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792722650736,
+      "tag": "0011_next_iron_patriot",
+      "breakpoints": true
     }
   ]
 }

@@ -10,7 +10,6 @@ export const onboardingRepository = {
 	async findProgress(userId: string) {
 		const [result] = await db
 			.select({
-				userId: progress.userId,
 				currentStep: steps,
 			})
 			.from(progress)
