@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../../db/index.js";
-import { roles, user, userRoles } from "../../db/schema/auth.js";
+import { roleRequests, roles, user, userRoles } from "../../db/schema/auth.js";
 
 export const getProfileById = async (userId: string) => {
 	const [profile] = await db
@@ -16,4 +16,47 @@ export const getProfileById = async (userId: string) => {
 		.limit(1);
 
 	return profile ?? null;
+};
+
+export type RequestedRole = "triage" | "researcher";
+
+export const roleRequestRepository = {
+	async create(userId: string, requestedRole: RequestedRole) {
+		const [request] = await db
+			.insert(roleRequests)
+			.values({
+				userId,
+				requestedRole,
+			})
+			.returning();
+
+		return request;
+	},
+
+	async findByUserId(userId: string) {
+		return db
+			.select()
+			.from(roleRequests)
+			.where(eq(roleRequests.userId, userId))
+			.orderBy(desc(roleRequests.createdAt));
+	},
+
+	async findPendingByUserId(userId: string) {
+		const [request] = await db
+			.select()
+			.from(roleRequests)
+			.where(
+				and(
+					eq(roleRequests.userId, userId),
+					eq(roleRequests.status, "pending"),
+				),
+			)
+			.limit(1);
+
+		return request ?? null;
+	},
+
+	async findAll() {
+		return db.select().from(roleRequests).orderBy(desc(roleRequests.createdAt));
+	},
 };

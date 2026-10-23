@@ -92,6 +92,13 @@
       "when": 1792724520543,
       "tag": "0012_high_drax",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792752211676,
+      "tag": "0013_simple_night_thrasher",
+      "breakpoints": true
     }
   ]
 }

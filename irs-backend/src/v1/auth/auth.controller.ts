@@ -1,26 +1,22 @@
-import { Hono } from "hono";
-import { every } from "hono/combine";
+import type { Context } from "hono";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import {
-	RateLimitCategory,
-	rateLimitMiddleware,
-} from "../../shared/middleware/rate-limiter.js";
-import { requireAuthMiddleware } from "../../shared/middleware/require-auth.js";
-import { getProfileById } from "./auth.repository.js";
+import { z } from "zod";
+import { getProfileById, roleRequestRepository } from "./auth.repository.js";
 
-export const authController = new Hono();
+const createRoleRequestSchema = z.object({
+	requestedRole: z.enum(["triage", "researcher"]),
+});
 
-authController.get(
-	"/get-profile",
-	requireAuthMiddleware,
-	every(rateLimitMiddleware(RateLimitCategory.LENIENT)),
-	async (c) => {
-		// userId comes from the session set by requireAuthMiddleware
+export const authController = {
+	async getProfile(c: Context) {
 		const session = c.get("session");
 
 		if (!session) {
 			return c.json(
-				{ message: ReasonPhrases.UNAUTHORIZED },
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
 				StatusCodes.UNAUTHORIZED,
 			);
 		}
@@ -29,12 +25,141 @@ authController.get(
 
 		if (!profile) {
 			return c.json(
-				{ message: ReasonPhrases.NOT_FOUND },
+				{
+					data: null,
+					message: ReasonPhrases.NOT_FOUND,
+				},
 				StatusCodes.NOT_FOUND,
 			);
 		}
 
-		// better auth use top level so im not gonna follow our api response format here
+		// Keep the profile response compatible with Better Auth's format.
 		return c.json(profile, StatusCodes.OK);
 	},
-);
+
+	async roleRequestRoutes(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		const body = await c.req.json().catch(() => null);
+		const validation = createRoleRequestSchema.safeParse(body);
+
+		if (!validation.success) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.BAD_REQUEST,
+				},
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const { requestedRole } = validation.data;
+
+		const pendingRequest = await roleRequestRepository.findPendingByUserId(
+			session.user.id,
+		);
+
+		if (pendingRequest) {
+			return c.json(
+				{
+					data: pendingRequest,
+					message: ReasonPhrases.CONFLICT,
+				},
+				StatusCodes.CONFLICT,
+			);
+		}
+
+		const request = await roleRequestRepository.create(
+			session.user.id,
+			requestedRole,
+		);
+
+		return c.json(
+			{
+				message: ReasonPhrases.CREATED,
+				data: request,
+			},
+			StatusCodes.CREATED,
+		);
+	},
+
+	async getMyRoleRequests(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		const requests = await roleRequestRepository.findByUserId(session.user.id);
+
+		if (requests.length === 0) {
+			return c.json(
+				{
+					data: null,
+					message: "No role requests found.",
+				},
+				StatusCodes.OK,
+			);
+		}
+
+		return c.json(
+			{
+				data: requests,
+				message: ReasonPhrases.OK,
+			},
+			StatusCodes.OK,
+		);
+	},
+
+	async getAllRoleRequests(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		// TODO: Add admin-role authorization before exposing all users' requests.
+
+		const requests = await roleRequestRepository.findAll();
+
+		if (requests.length === 0) {
+			return c.json(
+				{
+					data: null,
+					message: "No role requests found.",
+				},
+				StatusCodes.OK,
+			);
+		}
+
+		return c.json(
+			{
+				data: requests,
+				message: ReasonPhrases.OK,
+			},
+			StatusCodes.OK,
+		);
+	},
+};
