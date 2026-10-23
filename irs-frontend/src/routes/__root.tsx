@@ -1,10 +1,14 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import "../shared/styles/main.css";
 import NotFound from "@/features/not-found";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
+import "../shared/styles/main.css";
+
+const queryClient = new QueryClient();
 
 export const Route = createRootRoute({
 	component: RootComponent,
@@ -13,21 +17,24 @@ export const Route = createRootRoute({
 
 function RootComponent() {
 	return (
-		<>
+		<QueryClientProvider client={queryClient}>
 			<TooltipProvider>
 				<Outlet />
+
+				<ReactQueryDevtools initialIsOpen={false} />
+
+				<TanStackDevtools
+					config={{
+						position: "bottom-right",
+					}}
+					plugins={[
+						{
+							name: "TanStack Router",
+							render: <TanStackRouterDevtoolsPanel />,
+						},
+					]}
+				/>
 			</TooltipProvider>
-			<TanStackDevtools
-				config={{
-					position: "bottom-right",
-				}}
-				plugins={[
-					{
-						name: "TanStack Router",
-						render: <TanStackRouterDevtoolsPanel />,
-					},
-				]}
-			/>
-		</>
+		</QueryClientProvider>
 	);
 }

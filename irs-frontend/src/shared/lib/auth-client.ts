@@ -1,4 +1,5 @@
 import {
+	emailOTPClient,
 	inferAdditionalFields,
 	twoFactorClient,
 } from "better-auth/client/plugins";
@@ -17,6 +18,7 @@ export const authClient = createAuthClient({
 				},
 			},
 		}),
+		emailOTPClient(),
 	],
 });
 
