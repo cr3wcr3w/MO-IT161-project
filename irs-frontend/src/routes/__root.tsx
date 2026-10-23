@@ -7,6 +7,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import NotFound from "@/features/not-found";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import "../shared/styles/main.css";
+import { Toaster } from "@/shared/components/ui/sonner";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function RootComponent() {
 					]}
 				/>
 			</TooltipProvider>
+			<Toaster position="top-right" />
 		</QueryClientProvider>
 	);
 }
