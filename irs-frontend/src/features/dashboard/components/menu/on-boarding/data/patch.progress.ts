@@ -1,19 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { env } from "@/shared/config/env";
+import type { ApiResponse } from "@/shared/model/api-reponse";
 
 export type UpdateOnboardingProgressPayload = {
 	stepId: number;
 };
 
-export type UpdateOnboardingProgressResponse = {
-	data: unknown;
-	message: string;
-};
-
 async function updateOnboardingProgress(
 	payload: UpdateOnboardingProgressPayload,
-): Promise<UpdateOnboardingProgressResponse> {
+): Promise<ApiResponse<unknown>> {
 	const response = await fetch(
-		`${import.meta.env.VITE_API_URL}/api/v1/onboarding/progress`,
+		`${env.VITE_API_URL}/api/v1/onboarding/progress`,
 		{
 			method: "PATCH",
 			credentials: "include",

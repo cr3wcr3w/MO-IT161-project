@@ -34,7 +34,7 @@ export const onboardingController = {
 
 		if (!session) {
 			return c.json(
-				{ message: ReasonPhrases.UNAUTHORIZED },
+				{ data: null, message: ReasonPhrases.UNAUTHORIZED },
 				StatusCodes.UNAUTHORIZED,
 			);
 		}
@@ -53,7 +53,8 @@ export const onboardingController = {
 		// Already completed
 		if (currentProgress.completedAt) {
 			return c.json(
-				{ data: currentProgress, message: ReasonPhrases.OK },
+				// data: currentProgress
+				{ data: null, message: ReasonPhrases.OK },
 				StatusCodes.OK,
 			);
 		}
@@ -72,11 +73,12 @@ export const onboardingController = {
 			);
 		}
 
-		const result = await onboardingRepository.saveProgress(
-			session.user.id,
-			nextStep.id,
-		);
+		// const result = await onboardingRepository.saveProgress(
+		// 	session.user.id,
+		// 	nextStep.id,
+		// );
 
-		return c.json({ data: result, message: ReasonPhrases.OK }, StatusCodes.OK);
+		// data: result
+		return c.json({ data: null, message: ReasonPhrases.OK }, StatusCodes.OK);
 	},
 };

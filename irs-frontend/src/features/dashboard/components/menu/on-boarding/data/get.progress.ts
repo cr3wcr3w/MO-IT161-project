@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { env } from "@/shared/config/env";
+import type { ApiResponse } from "@/shared/model/api-reponse";
 import type { OnboardingStepData } from "./get.steps";
 
 export type OnboardingProgressData = {
@@ -6,14 +8,11 @@ export type OnboardingProgressData = {
 	completedAt: string | null;
 };
 
-export type OnboardingProgressResponse = {
-	data: OnboardingProgressData | null;
-	message: string;
-};
-
-async function getOnboardingProgress(): Promise<OnboardingProgressResponse> {
+async function getOnboardingProgress(): Promise<
+	ApiResponse<OnboardingProgressData>
+> {
 	const response = await fetch(
-		`${import.meta.env.VITE_API_URL}/api/v1/onboarding/progress`,
+		`${env.VITE_API_URL}/api/v1/onboarding/progress`,
 		{
 			credentials: "include",
 		},
