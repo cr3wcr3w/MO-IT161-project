@@ -28,6 +28,7 @@ export const errorMiddleware: ErrorHandler = (err, c) => {
 
 	return c.json(
 		{
+			data: null,
 			message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
 		},
 		StatusCodes.INTERNAL_SERVER_ERROR,

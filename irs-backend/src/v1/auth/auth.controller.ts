@@ -1,27 +1,232 @@
-import { Hono } from "hono";
+import type { Context } from "hono";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { requireAuthMiddleware } from "../../shared/middleware/require-auth.js";
-import { getProfileById } from "./auth.repository.js";
+import { z } from "zod";
+import { getProfileById, roleRequestRepository } from "./auth.repository.js";
 
-export const authController = new Hono();
-
-authController.get("/get-profile", requireAuthMiddleware, async (c) => {
-	// userId comes from the session set by requireAuthMiddleware
-	const session = c.get("session");
-
-	if (!session) {
-		return c.json(
-			{ message: ReasonPhrases.UNAUTHORIZED },
-			StatusCodes.UNAUTHORIZED,
-		);
-	}
-
-	const profile = await getProfileById(session.user.id);
-
-	if (!profile) {
-		return c.json({ message: ReasonPhrases.NOT_FOUND }, StatusCodes.NOT_FOUND);
-	}
-
-	// better auth use top level so im not gonna follow our api response format here
-	return c.json(profile, StatusCodes.OK);
+const createRoleRequestSchema = z.object({
+	requestedRole: z.enum(["triage", "researcher"]),
 });
+
+const updateRoleRequestStatusSchema = z.object({
+	status: z.enum(["pending", "approved", "rejected"]),
+});
+
+export const authController = {
+	async getProfile(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		const profile = await getProfileById(session.user.id);
+
+		if (!profile) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.NOT_FOUND,
+				},
+				StatusCodes.NOT_FOUND,
+			);
+		}
+
+		// Keep the profile response compatible with Better Auth's format.
+		return c.json(profile, StatusCodes.OK);
+	},
+
+	async roleRequestRoutes(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		const body = await c.req.json().catch(() => null);
+		const validation = createRoleRequestSchema.safeParse(body);
+
+		if (!validation.success) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.BAD_REQUEST,
+				},
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const { requestedRole } = validation.data;
+
+		const pendingRequest = await roleRequestRepository.findPendingByUserId(
+			session.user.id,
+		);
+
+		if (pendingRequest) {
+			return c.json(
+				{
+					data: pendingRequest,
+					message: ReasonPhrases.CONFLICT,
+				},
+				StatusCodes.CONFLICT,
+			);
+		}
+
+		const request = await roleRequestRepository.create(
+			session.user.id,
+			requestedRole,
+		);
+
+		return c.json(
+			{
+				message: ReasonPhrases.CREATED,
+				data: request,
+			},
+			StatusCodes.CREATED,
+		);
+	},
+
+	async getMyRoleRequests(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		const requests = await roleRequestRepository.findByUserId(session.user.id);
+
+		if (requests.length === 0) {
+			return c.json(
+				{
+					data: null,
+					message: "No role requests found.",
+				},
+				StatusCodes.OK,
+			);
+		}
+
+		return c.json(
+			{
+				data: requests,
+				message: ReasonPhrases.OK,
+			},
+			StatusCodes.OK,
+		);
+	},
+
+	async getAllRoleRequests(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		// TODO: Add admin-role authorization before exposing all users' requests.
+
+		const requests = await roleRequestRepository.findAll();
+
+		if (requests.length === 0) {
+			return c.json(
+				{
+					data: null,
+					message: "No role requests found.",
+				},
+				StatusCodes.OK,
+			);
+		}
+
+		return c.json(
+			{
+				data: requests,
+				message: ReasonPhrases.OK,
+			},
+			StatusCodes.OK,
+		);
+	},
+
+	async updateRoleRequestStatus(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		const requestId = c.req.param("id");
+
+		if (!requestId) {
+			return c.json(
+				{
+					data: null,
+					message: "Role request ID is required.",
+				},
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const body = await c.req.json().catch(() => null);
+		const validation = updateRoleRequestStatusSchema.safeParse(body);
+
+		if (!validation.success) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.BAD_REQUEST,
+				},
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const request = await roleRequestRepository.updateStatus(
+			requestId,
+			validation.data.status,
+			session.user.id,
+		);
+
+		if (!request) {
+			return c.json(
+				{
+					data: null,
+					message: "Role request not found.",
+				},
+				StatusCodes.NOT_FOUND,
+			);
+		}
+
+		return c.json(
+			{
+				data: request,
+				message: "Role request status updated successfully.",
+			},
+			StatusCodes.OK,
+		);
+	},
+};

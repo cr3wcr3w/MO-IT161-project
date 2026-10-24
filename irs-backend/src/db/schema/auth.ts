@@ -19,6 +19,7 @@ export const user = authSchema.table("user", {
 	name: text("name").notNull().default(""),
 	email: text("email").notNull().unique(),
 	emailVerified: boolean("email_verified").default(false).notNull(),
+	// Image: Required by Better Auth, but not used by the application.
 	image: text("image"),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at")
@@ -139,5 +140,46 @@ export const userRoles = authSchema.table(
 		index("user_roles_role_id_idx").on(table.roleId),
 		// Each user can have only one role.
 		unique("user_roles_user_id_unique").on(table.userId),
+	],
+);
+
+export const roleRequestStatusEnum = pgEnum("role_request_status", [
+	"pending",
+	"approved",
+	"rejected",
+]);
+
+export const roleRequestRoleEnum = pgEnum("role_request_role", [
+	"triage",
+	"researcher",
+]);
+
+export const roleRequests = authSchema.table(
+	"role_requests",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+
+		requestedRole: roleRequestRoleEnum("requested_role").notNull(),
+
+		status: roleRequestStatusEnum("status").notNull().default("pending"),
+
+		reviewedBy: text("reviewed_by").references(() => user.id, {
+			onDelete: "set null",
+		}),
+
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("role_requests_user_id_idx").on(table.userId),
+		index("role_requests_status_idx").on(table.status),
 	],
 );

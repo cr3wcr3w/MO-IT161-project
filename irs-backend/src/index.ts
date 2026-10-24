@@ -6,6 +6,8 @@ import { env } from "./config/env.js";
 import { errorMiddleware } from "./shared/middleware/error.js";
 import { notFoundMiddleware } from "./shared/middleware/not-found.js";
 import { authRoutes } from "./v1/auth/auth.routes.js";
+import { emailRoutes } from "./v1/email/email.routes.js";
+import { onboardingRoutes } from "./v1/onboarding/onboarding.routes.js";
 
 const app = new Hono();
 
@@ -14,7 +16,7 @@ app.use(
 	"*",
 	cors({
 		origin: env.BETTER_AUTH_URL,
-		allowMethods: ["GET", "POST", "OPTIONS"],
+		allowMethods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 		allowHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 	}),
@@ -28,6 +30,8 @@ app.get("/", (c) => {
 	return c.text("Hello, World!");
 });
 app.route("/api/v1/auth", authRoutes);
+app.route("/api/v1/onboarding", onboardingRoutes);
+app.route("/api/v1/email", emailRoutes);
 
 serve(
 	{

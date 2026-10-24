@@ -7,11 +7,13 @@ The project aims to provide an organized workflow for handling incident reports,
 
 ### Key Features
 
-- [ ] **Incident Management** — Create, manage, and track incident reports, including their statuses and timelines.
-- [ ] **Role-Based Access Control (RBAC)** — Manage permissions for administrators, guests, triage personnel, and researchers.
 - [x] **Authentication and Authorization** — Secure user accounts and sessions using Better Auth.
+- [x] **Email OTP Verification** — Verify email addresses using time-limited, six-digit one-time passwords (OTPs) during onboarding.
+- [x] **Role-Based Access Control (RBAC)** — Manage permissions for administrators, guests, triage personnel, and researchers.
+- [ ] **User Onboarding** — Guide new users through account registration, email verification, default guest role assignment, and initial access to the application.
+- [ ] **Role Request and Approval** — Allow guests to request elevated access as triage personnel or researchers, subject to administrator approval.
+- [ ] **Incident Management** — Create, manage, and track incident reports, including their statuses and timelines.
 - [ ] **Incident Review and Triage** — Review submitted reports, prioritize incidents, and coordinate their handling.
-- [ ] **Role Request and Approval** — Allow guests to request elevated access, subject to administrator approval.
 - [ ] **Application Logging and Auditing** — Maintain application logs for troubleshooting and audit records for tracking significant user actions and data changes.
 
 ### Technology Stack
@@ -30,8 +32,6 @@ The project aims to provide an organized workflow for handling incident reports,
 - [View Postman API Documentation](/docs/docs-postman/MO-IT161.postman_collection.json)
 - [View Design Mockup](docs/docs-img/design.png)
 - [View GitHub Convention File](docs/docs-github-convention/github_convention.md)
-- [View Coding Standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a)
-
 
 ### AI Use Statement
 
@@ -39,11 +39,11 @@ AI tools were used to assist in developing the website design concept and suppor
 
 ### Architecture and Development Conventions
 
-- **Feature-based architecture:** Frontend and backend modules are organized around application features.
-- **Functional programming principles:** Pure functions, immutability, composition, and separation of side effects are applied where appropriate.
-- **Functional Core, Imperative Shell:** Business logic is separated from HTTP handling and database operations where practical.
-- **Single Responsibility Principle (SRP):** Functions and modules are designed around clear responsibilities.
-- **Consistent coding standards:** Development practices follow the project's [coding standard](https://gist.github.com/cr3wcr3w/3096f0d1aa9f7050766af4620b12887a).
+- **Feature-based Frontend:** Organizes components, hooks, API functions, and state management by application feature.
+- **Versioned Backend API:** Groups backend modules under versioned directories (e.g., `v1`) to maintain clear API boundaries and support future versions.
+- **RESTful API Design:** Uses resource-oriented routes and appropriate HTTP methods, documented consistently in Postman.
+- **Composition and Reusability:** Composes frontend components and backend functions and middleware into focused, reusable units.
+- **Separation of Concerns:** Separates routes, controllers, services, validation schemas, and database operations according to their responsibilities.
 
 ### Database Schema Overview
 

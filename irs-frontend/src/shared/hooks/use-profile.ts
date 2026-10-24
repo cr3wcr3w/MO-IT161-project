@@ -18,7 +18,7 @@ const getProfile = async (): Promise<Profile> => {
 	return res.data as Profile;
 };
 
-export function useProfile(): {
+export function useProfile(isOnboardingComplete: boolean): {
 	profile: Profile | null;
 	nav: NavConfig;
 } {
@@ -40,8 +40,9 @@ export function useProfile(): {
 		};
 	}, []);
 
-	const nav =
-		profile && NAV_BY_ROLE[profile.roleName]
+	const nav: NavConfig = !isOnboardingComplete
+		? NAV_BY_ROLE.guest
+		: profile && NAV_BY_ROLE[profile.roleName]
 			? NAV_BY_ROLE[profile.roleName]
 			: FALLBACK_NAV;
 

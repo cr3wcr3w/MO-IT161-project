@@ -1,3 +1,0 @@
-1. 0005_funny_leper_queen.sql 
- - what happen here is when user created they give a 'guest' role as default
- - why? because i dont see a solution to have a trasaction when creating a user

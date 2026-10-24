@@ -50,6 +50,55 @@
       "when": 1792058362690,
       "tag": "0006_lonely_stardust",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792498752833,
+      "tag": "0007_ancient_morbius",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792498907755,
+      "tag": "0008_motionless_silvermane",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792499270936,
+      "tag": "0009_ambiguous_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792500063123,
+      "tag": "0010_natural_demogoblin",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792722650736,
+      "tag": "0011_next_iron_patriot",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792724520543,
+      "tag": "0012_high_drax",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792752211676,
+      "tag": "0013_simple_night_thrasher",
+      "breakpoints": true
     }
   ]
 }
