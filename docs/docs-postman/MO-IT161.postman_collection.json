@@ -295,6 +295,37 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "/auth/role-requests/{{requestId}}/status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"pending\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/role-requests/{{requestId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "role-requests",
+                "{{requestId}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
         }
       ],
       "description": "Better Auth email/password authentication endpoints. Run the development seed before testing the predefined accounts."
