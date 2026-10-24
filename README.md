@@ -52,6 +52,7 @@ The project uses PostgreSQL and Drizzle ORM, with three schemas:
 - **`auth`** — Manages authentication, sessions, accounts, and role-based access control.
 - **`incident`** — Manages incident reports, statuses, and report timelines.
 - **`logging`** — Organizes application logs for debugging and monitoring separately from audit logs that track significant user actions and data changes.
+- **`onBoarding`** — Manages onboarding steps and user progress, including the current step and completion timestamp, to track account setup and determine whether a user has completed onboarding.
 
 Each schema has a distinct responsibility, improving maintainability and separating authentication, incident management, and logging concerns.
 
