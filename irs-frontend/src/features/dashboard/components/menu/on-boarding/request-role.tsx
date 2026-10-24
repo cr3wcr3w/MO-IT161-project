@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Clock, RefreshCw, ShieldCheck } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { Label } from "@/shared/components/ui/label";
@@ -19,6 +19,7 @@ export function RequestRole({
 	const [requestedRole, setRequestedRole] = useState<RequestedRole>("triage");
 	const [requests, setRequests] = useState<RoleRequest[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isRefreshing, setIsRefreshing] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const pendingRequest =
@@ -29,8 +30,18 @@ export function RequestRole({
 	const isApproved = requests.some((request) => request.status === "approved");
 
 	const fetchRoleRequests = useCallback(async () => {
-		getRoleRequests(setIsLoading, setRequests);
+		await getRoleRequests(setIsLoading, setRequests);
 	}, []);
+
+	const handleRefresh = useCallback(async () => {
+		setIsRefreshing(true);
+
+		try {
+			await fetchRoleRequests();
+		} finally {
+			setIsRefreshing(false);
+		}
+	}, [fetchRoleRequests]);
 
 	useEffect(() => {
 		if (isSessionPending) return;
@@ -70,7 +81,7 @@ export function RequestRole({
 					<ShieldCheck className="size-5" />
 				</div>
 
-				<div className="space-y-1">
+				<div className="min-w-0 flex-1 space-y-1">
 					<h2 className="text-xl font-semibold">Request an account role</h2>
 
 					<p className="text-sm text-muted-foreground">
@@ -78,6 +89,19 @@ export function RequestRole({
 						administrator will review your request.
 					</p>
 				</div>
+
+				<Button
+					type="button"
+					variant="outline"
+					size="sm"
+					onClick={handleRefresh}
+					disabled={isRefreshing || isSubmitting}
+				>
+					<RefreshCw
+						className={`mr-2 size-4 ${isRefreshing ? "animate-spin" : ""}`}
+					/>
+					{isRefreshing ? "Refreshing..." : "Refresh status"}
+				</Button>
 			</div>
 
 			{pendingRequest ? (
@@ -182,6 +206,12 @@ export function RequestRole({
 						{isSubmitting ? "Submitting request..." : "Submit Role Request"}
 					</Button>
 				</div>
+			)}
+
+			{isRefreshing && (
+				<p className="text-center text-xs text-muted-foreground">
+					Checking your latest request status...
+				</p>
 			)}
 		</div>
 	);

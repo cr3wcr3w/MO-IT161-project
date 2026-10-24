@@ -14,16 +14,24 @@ import { authClient } from "@/shared/lib/auth-client";
 export const Route = createFileRoute("/dashboard")({
 	beforeLoad: async () => {
 		const { data: session } = await authClient.getSession();
+		console.log(session?.user?.isOnboardingComplete);
 		if (!session) {
 			throw redirect({ to: "/signin" });
 		}
+
+		return {
+			isOnboardingComplete: Boolean(session.user.isOnboardingComplete),
+		};
 	},
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	const { profile, nav } = useProfile();
+	const { isOnboardingComplete } = Route.useRouteContext();
+	const { profile, nav } = useProfile(isOnboardingComplete);
 	const { activeView } = useDashboardStore();
+
+	console.log(nav);
 
 	const View = profile && activeView ? DASHBOARD_VIEWS[activeView] : null;
 	const activeLabel = nav.items.find((i) => i.view === activeView)?.label;

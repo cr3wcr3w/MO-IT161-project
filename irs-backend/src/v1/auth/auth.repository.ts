@@ -57,6 +57,77 @@ export const roleRequestRepository = {
 	},
 
 	async findAll() {
-		return db.select().from(roleRequests).orderBy(desc(roleRequests.createdAt));
+		return db
+			.select({
+				id: roleRequests.id,
+				userEmail: user.email,
+				requestedRole: roleRequests.requestedRole,
+				status: roleRequests.status,
+				reviewedBy: roleRequests.reviewedBy,
+				createdAt: roleRequests.createdAt,
+				updatedAt: roleRequests.updatedAt,
+			})
+			.from(roleRequests)
+			.leftJoin(user, eq(roleRequests.userId, user.id))
+			.orderBy(desc(roleRequests.createdAt));
+	},
+
+	async updateStatus(
+		requestId: string,
+		status: "pending" | "approved" | "rejected",
+		reviewedBy: string,
+	) {
+		return db.transaction(async (tx) => {
+			// Find the role request.
+			const [request] = await tx
+				.select()
+				.from(roleRequests)
+				.where(eq(roleRequests.id, requestId))
+				.limit(1);
+
+			if (!request) {
+				return null;
+			}
+
+			// Assign the requested role when approved.
+			if (status === "approved") {
+				const [role] = await tx
+					.select({ id: roles.id })
+					.from(roles)
+					.where(eq(roles.name, request.requestedRole))
+					.limit(1);
+
+				if (!role) {
+					throw new Error(`Role "${request.requestedRole}" does not exist.`);
+				}
+
+				// Insert the role or replace the user's existing role.
+				await tx
+					.insert(userRoles)
+					.values({
+						userId: request.userId,
+						roleId: role.id,
+					})
+					.onConflictDoUpdate({
+						target: userRoles.userId,
+						set: {
+							roleId: role.id,
+						},
+					});
+			}
+
+			// Update the request status.
+			const [updatedRequest] = await tx
+				.update(roleRequests)
+				.set({
+					status,
+					reviewedBy,
+					updatedAt: new Date(),
+				})
+				.where(eq(roleRequests.id, requestId))
+				.returning();
+
+			return updatedRequest ?? null;
+		});
 	},
 };

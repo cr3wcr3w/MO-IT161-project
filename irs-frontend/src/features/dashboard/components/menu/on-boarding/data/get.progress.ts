@@ -30,5 +30,6 @@ export function useGetOnboardingProgress() {
 		queryKey: ["onboarding", "progress"],
 		queryFn: getOnboardingProgress,
 		staleTime: 30 * 1000,
+		refetchInterval: 30 * 1000,
 	});
 }

@@ -7,6 +7,10 @@ const createRoleRequestSchema = z.object({
 	requestedRole: z.enum(["triage", "researcher"]),
 });
 
+const updateRoleRequestStatusSchema = z.object({
+	status: z.enum(["pending", "approved", "rejected"]),
+});
+
 export const authController = {
 	async getProfile(c: Context) {
 		const session = c.get("session");
@@ -158,6 +162,69 @@ export const authController = {
 			{
 				data: requests,
 				message: ReasonPhrases.OK,
+			},
+			StatusCodes.OK,
+		);
+	},
+
+	async updateRoleRequestStatus(c: Context) {
+		const session = c.get("session");
+
+		if (!session) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.UNAUTHORIZED,
+				},
+				StatusCodes.UNAUTHORIZED,
+			);
+		}
+
+		const requestId = c.req.param("id");
+
+		if (!requestId) {
+			return c.json(
+				{
+					data: null,
+					message: "Role request ID is required.",
+				},
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const body = await c.req.json().catch(() => null);
+		const validation = updateRoleRequestStatusSchema.safeParse(body);
+
+		if (!validation.success) {
+			return c.json(
+				{
+					data: null,
+					message: ReasonPhrases.BAD_REQUEST,
+				},
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const request = await roleRequestRepository.updateStatus(
+			requestId,
+			validation.data.status,
+			session.user.id,
+		);
+
+		if (!request) {
+			return c.json(
+				{
+					data: null,
+					message: "Role request not found.",
+				},
+				StatusCodes.NOT_FOUND,
+			);
+		}
+
+		return c.json(
+			{
+				data: request,
+				message: "Role request status updated successfully.",
 			},
 			StatusCodes.OK,
 		);

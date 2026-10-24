@@ -1,5 +1,7 @@
+import { useNavigate } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@/shared/components/ui/button";
 import { useGetOnboardingProgress } from "./on-boarding/data/get.progress";
 import { useGetOnboardingSteps } from "./on-boarding/data/get.steps";
 import { useUpdateOnboardingProgress } from "./on-boarding/data/patch.progress";
@@ -8,6 +10,7 @@ import { RequestRole } from "./on-boarding/request-role";
 import { VerifyEmail } from "./on-boarding/verify-email";
 
 export function OnBoarding() {
+	const navigate = useNavigate();
 	const stepsQuery = useGetOnboardingSteps();
 	const progressQuery = useGetOnboardingProgress();
 	const updateProgress = useUpdateOnboardingProgress();
@@ -62,6 +65,16 @@ export function OnBoarding() {
 						<p className="max-w-md text-muted-foreground">
 							Your account onboarding is complete. You're all set!
 						</p>
+						<Button
+							onClick={() =>
+								navigate({
+									to: "/dashboard",
+									reloadDocument: true,
+								})
+							}
+						>
+							Go to Dashboard
+						</Button>
 					</div>
 				) : (
 					<OnboardingStepper

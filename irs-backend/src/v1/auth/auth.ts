@@ -1,10 +1,12 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/api";
-import { emailOTP } from "better-auth/plugins";
+import { customSession, emailOTP } from "better-auth/plugins";
+import { eq } from "drizzle-orm";
 import { env } from "../../config/env.js";
 import { db } from "../../db/index.js";
 import * as authSchema from "../../db/schema/auth.js";
+import { progress } from "../../db/schema/onboarding.js";
 import { sendEmail } from "../email/email.service.js";
 import { generateOnBoardingEmail } from "../email/email.templates.js";
 
@@ -72,28 +74,25 @@ const auth = betterAuth({
 				});
 			},
 		}),
-		// customSession(async({user: authUser, session}) => {
-		// 	const [userRole] = await db
-		// 		.select({
-		// 			role: roles.name,
-		// 		})
-		// 		.from(userRoles)
-		// 		.innerJoin(roles, eq(userRoles.roleId, roles.id))
-		// 		.where(eq(userRoles.userId, authUser.id))
-		// 		.limit(1);
+		customSession(async ({ user: authUser, session }) => {
+			const [onboardingProgress] = await db
+				.select({
+					completedAt: progress.completedAt,
+				})
+				.from(progress)
+				.where(eq(progress.userId, authUser.id))
+				.limit(1);
 
-		// 	if (!userRole) {
-		// 		throw new Error("User has no assigned role.");
-		// 	}
-
-		// 	return {
-		// 		user: {
-		// 			...authUser,
-		// 			role: userRole?.role
-		// 		},
-		// 		session,
-		// 	};
-		// })
+			return {
+				user: {
+					...authUser,
+					isOnboardingComplete:
+						onboardingProgress?.completedAt !== null &&
+						onboardingProgress?.completedAt !== undefined,
+				},
+				session,
+			};
+		}),
 	],
 });
 

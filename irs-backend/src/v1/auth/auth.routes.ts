@@ -72,9 +72,16 @@ authRoutes.get(
 authRoutes.get(
 	"/role-requests/all",
 	requireAuthMiddleware,
-	requireRole("admin"),
 	every(rateLimitMiddleware(RateLimitCategory.LENIENT)),
 	authController.getAllRoleRequests,
+);
+// patch change status
+authRoutes.patch(
+	"/role-requests/:id/status",
+	requireAuthMiddleware,
+	requireRole("admin"),
+	every(rateLimitMiddleware(RateLimitCategory.MODERATE)),
+	authController.updateRoleRequestStatus,
 );
 
 // Better Auth catch-all must stay last so custom routes are matched first

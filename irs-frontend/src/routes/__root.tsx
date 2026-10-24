@@ -1,13 +1,13 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import NotFound from "@/features/not-found";
+import { Toaster } from "@/shared/components/ui/sonner";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import "../shared/styles/main.css";
-import { Toaster } from "@/shared/components/ui/sonner";
 
 const queryClient = new QueryClient();
 
@@ -22,21 +22,24 @@ function RootComponent() {
 			<TooltipProvider>
 				<Outlet />
 
-				<ReactQueryDevtools initialIsOpen={false} />
-
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",
 					}}
 					plugins={[
 						{
+							name: "TanStack Query",
+							render: <ReactQueryDevtoolsPanel />,
+						},
+						{
 							name: "TanStack Router",
 							render: <TanStackRouterDevtoolsPanel />,
 						},
 					]}
 				/>
+
+				<Toaster position="top-right" />
 			</TooltipProvider>
-			<Toaster position="top-right" />
 		</QueryClientProvider>
 	);
 }

@@ -17,6 +17,10 @@ export const authClient = createAuthClient({
 					type: "string",
 					required: false,
 				},
+				isOnboardingComplete: {
+					type: "boolean",
+					required: false,
+				},
 			},
 		}),
 		emailOTPClient(),
