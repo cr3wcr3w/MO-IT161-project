@@ -10,3 +10,4 @@
 11. in postman add the origin in headers in default whenever dev export/import it
 12. investigate if in github action having a two matrix is needed?
 13. in seed we need to make them in onBoarding as compleeted and also they should be verefied email
+14. recheck when you loggin in dashboard, delete the user then look what will happen in frontend

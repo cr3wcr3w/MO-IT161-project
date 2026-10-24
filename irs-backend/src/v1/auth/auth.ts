@@ -72,6 +72,28 @@ const auth = betterAuth({
 				});
 			},
 		}),
+		// customSession(async({user: authUser, session}) => {
+		// 	const [userRole] = await db
+		// 		.select({
+		// 			role: roles.name,
+		// 		})
+		// 		.from(userRoles)
+		// 		.innerJoin(roles, eq(userRoles.roleId, roles.id))
+		// 		.where(eq(userRoles.userId, authUser.id))
+		// 		.limit(1);
+
+		// 	if (!userRole) {
+		// 		throw new Error("User has no assigned role.");
+		// 	}
+
+		// 	return {
+		// 		user: {
+		// 			...authUser,
+		// 			role: userRole?.role
+		// 		},
+		// 		session,
+		// 	};
+		// })
 	],
 });
 

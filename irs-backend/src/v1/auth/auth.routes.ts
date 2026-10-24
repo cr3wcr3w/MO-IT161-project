@@ -5,6 +5,7 @@ import {
 	rateLimitMiddleware,
 } from "../../shared/middleware/rate-limiter.js";
 import { requireAuthMiddleware } from "../../shared/middleware/require-auth.js";
+import { requireRole } from "../../shared/middleware/require-role.js";
 import { authController } from "./auth.controller.js";
 import auth from "./auth.js";
 
@@ -56,6 +57,7 @@ authRoutes.get(
 authRoutes.post(
 	"/role-requests",
 	requireAuthMiddleware,
+	requireRole("guest"),
 	every(rateLimitMiddleware(RateLimitCategory.MODERATE)),
 	authController.roleRequestRoutes,
 );
@@ -70,6 +72,7 @@ authRoutes.get(
 authRoutes.get(
 	"/role-requests/all",
 	requireAuthMiddleware,
+	requireRole("admin"),
 	every(rateLimitMiddleware(RateLimitCategory.LENIENT)),
 	authController.getAllRoleRequests,
 );

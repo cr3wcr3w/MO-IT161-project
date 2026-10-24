@@ -7,12 +7,13 @@ The project aims to provide an organized workflow for handling incident reports,
 
 ### Key Features
 
-- [ ] **Incident Management** — Create, manage, and track incident reports, including their statuses and timelines.
-- [ ] **Role-Based Access Control (RBAC)** — Manage permissions for administrators, guests, triage personnel, and researchers.
 - [x] **Authentication and Authorization** — Secure user accounts and sessions using Better Auth.
 - [x] **Email OTP Verification** — Verify email addresses using time-limited, six-digit one-time passwords (OTPs) during onboarding.
+- [x] **Role-Based Access Control (RBAC)** — Manage permissions for administrators, guests, triage personnel, and researchers.
+- [ ] **User Onboarding** — Guide new users through account registration, email verification, default guest role assignment, and initial access to the application.
+- [ ] **Role Request and Approval** — Allow guests to request elevated access as triage personnel or researchers, subject to administrator approval.
+- [ ] **Incident Management** — Create, manage, and track incident reports, including their statuses and timelines.
 - [ ] **Incident Review and Triage** — Review submitted reports, prioritize incidents, and coordinate their handling.
-- [ ] **Role Request and Approval** — Allow guests to request elevated access, subject to administrator approval.
 - [ ] **Application Logging and Auditing** — Maintain application logs for troubleshooting and audit records for tracking significant user actions and data changes.
 
 ### Technology Stack
