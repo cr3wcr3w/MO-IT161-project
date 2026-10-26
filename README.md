@@ -5,6 +5,8 @@ A full-stack **Incident Reporting System (IRS)** developed in response to a comp
 
 The project aims to provide an organized workflow for handling incident reports, managing user access, and supporting authorized personnel in reviewing and analyzing submitted information.
 
+> Demo and Setup Guide: [video link](https://drive.google.com/file/d/1WlR5fhIScv_NeWs36hOWB2XTySVUq6XR/view?usp=sharing)
+
 ### Key Features
 
 - [x] **Authentication and Authorization** — Secure user accounts and sessions using Better Auth.

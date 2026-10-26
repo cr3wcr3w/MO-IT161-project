@@ -1,6 +1,6 @@
 ## Setup
 
-[Watch the Setup Demo](https://drive.google.com/file/d/1Wr1D5pHAr6f2o3X1TU8Dn9IX0wzZVsDX/view?usp=sharing)
+[Watch the Setup Demo](https://drive.google.com/file/d/1WlR5fhIScv_NeWs36hOWB2XTySVUq6XR/view?usp=sharing)
 
 ### 1. Install Dependencies
 
