@@ -32,10 +32,12 @@ The project aims to provide an organized workflow for handling incident reports,
 - [View Postman API Documentation](/docs/docs-postman/MO-IT161.postman_collection.json)
 - [View Design Mockup](docs/docs-img/design.png)
 - [View GitHub Convention File](docs/docs-github-convention/github_convention.md)
+- [View Backend documentation](/irs-backend/README.md)
+- [View Frontend documentation](/irs-frontend/README.md)
 
 ### AI Use Statement
 
-AI tools were used to assist in developing the website design concept and supporting visual mockup. See the [design mockup](docs/docs-img/design.png).
+AI tools, were used to assist in developing the website design concept, creating supporting visual mockups, and improving code quality through code suggestions, debugging assistance, and implementation guidance. All AI-generated suggestions were reviewed and adapted as needed to fit the project's requirements.
 
 ### Architecture and Development Conventions
 

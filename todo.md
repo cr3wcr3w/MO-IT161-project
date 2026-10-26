@@ -7,3 +7,4 @@
 11. in postman add the origin in headers in default whenever dev export/import it
 14. recheck when you loggin in dashboard, delete the user then look what will happen in frontend
 15. make a global type for a database to minimuze creating types in each api response
+16. under admin dashboard request menu, the reviewBy is use of userId change it into email
