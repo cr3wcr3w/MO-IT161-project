@@ -20,8 +20,8 @@ The project aims to provide an organized workflow for handling incident reports,
 
 ### Technology Stack
 
-- **Frontend:** React, TypeScript, Vite, Tanstack Query/Router, Tailwind, Shadcn, Zustand 
-- **Backend:** Hono, TypeScript
+- **Frontend:** React, TypeScript, Vite, Tanstack Query/Router, Tailwind, Shadcn, Zustand, Zod
+- **Backend:** Hono, TypeScript, Zod
 - **Database:** PostgreSQL
 - **ORM:** Drizzle ORM
 - **Auth:** Better Auth
